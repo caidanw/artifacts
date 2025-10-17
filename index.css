@@ -24,8 +24,7 @@ hgroup {
   gap: 1rem;
   padding: 1rem 0;
   border-bottom: 1px solid var(--divider);
-  text-decoration: none;
-  color: inherit;
+
   transition: background 0.15s ease;
 }
 
