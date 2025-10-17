@@ -12,5 +12,5 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: "ServerMono", monospace;
-  padding: 2rem 1rem;
+  padding: 3rem 2rem;
 }
