@@ -44,13 +44,13 @@ body {
   margin-top: 8px;
 }
 
-.experiments {
+.artifacts {
   display: grid;
   gap: 2px;
   max-width: 1200px;
 }
 
-.experiment {
+.artifact {
   display: grid;
   grid-template-columns: 80px 1fr;
   gap: 20px;
@@ -62,11 +62,11 @@ body {
   align-items: start;
 }
 
-.experiment:hover {
+.artifact:hover {
   background: var(--hover-bg);
 }
 
-.experiment:hover .number {
+.artifact:hover .number {
   color: var(--fg);
 }
 

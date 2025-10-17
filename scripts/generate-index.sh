@@ -17,8 +17,8 @@ cat > index.html << 'INDEXEOF'
     <div class="meta">experimental web constructs</div>
   </div>
  
-  <div class="experiments">
-INDEXEOF
+  <div class="artifacts">
+HEADER
 
 # Find all experiment directories (format: 001-name)
 for dir in [0-9][0-9][0-9]-*/; do
