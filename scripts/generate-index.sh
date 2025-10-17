@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-cat > index.html << 'INDEXEOF'
+cat >index.html <<HEADER
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,36 +24,35 @@ HEADER
 for dir in [0-9][0-9][0-9]-*/; do
   [ -d "$dir" ] || continue
   [ -f "${dir}index.html" ] || continue
-  
-  # Extract number and name from directory
+
   dirname=$(basename "$dir")
-  number=$(echo "$dirname" | cut -d'-' -f1)
-  name=$(echo "$dirname" | cut -d'-' -f2- | tr '-' ' ')
-  
-  # Try to extract title from HTML
-  title=$(grep -oP '(?<=<title>).*(?=</title>)' "${dir}index.html" 2>/dev/null || echo "$name")
-  
+
+  # Extract number and name from title
+  title=$(htmlq --text --filename "${dir}index.html" 'title')
+  number=$(echo "$title" | cut -d'-' -f1)
+  name=$(echo "$title" | cut -d'-' -f2- | tr '-' ' ')
+
   # Try to extract date from meta tag
-  date=$(grep -oP '(?<=<meta name="created" content=").*(?=">)' "${dir}index.html" 2>/dev/null || echo "")
-  
+  date=$(htmlq --attribute content --filename "${dir}index.html" 'meta[name="date"]')
+
   # Format date from YYYY-MM-DD to YYYY.MM.DD
   if [ -n "$date" ]; then
-    date=$(echo "$date" | tr '-' '.')
+    display_date=$(echo "$date" | tr '-' '.')
   fi
-  
-  cat >> index.html << ENTRY
-    <a href="${dirname}/" class="experiment">
+
+  cat >>index.html <<ENTRY
+    <a href="${dirname}/" class="artifact">
       <div class="number">${number}</div>
       <div class="info">
-        <div class="title">${title}</div>
-        <div class="date">${date}</div>
+        <div class="name">${name}</div>
+        <time class="date" datetime="${date}">${display_date}</time>
       </div>
     </a>
-    
+
 ENTRY
 done
 
-cat >> index.html << 'INDEXEOF'
+cat >>index.html <<'INDEXEOF'
   </div>
 </body>
 </html>
