@@ -1,0 +1,16 @@
+:root {
+  /* Neutral palette in OKLab (grays) */
+  --bg: oklab(0 0 0);
+  --fg: oklab(1 0 0);
+  --border: oklab(0.22 0 0);
+  --divider: oklab(0.18 0 0);
+  --muted: oklab(0.6 0 0);
+  --hover-bg: oklab(0.14 0 0);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "ServerMono", monospace;
+  padding: 2rem 1rem;
+}
