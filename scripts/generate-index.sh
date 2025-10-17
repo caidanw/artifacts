@@ -8,6 +8,7 @@ cat > index.html << 'INDEXEOF'
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>artifacts/</title>
+  <link rel="stylesheet" href="reset.css">
   <style>
     @font-face {
       font-family: 'ServerMono';
@@ -17,11 +18,7 @@ cat > index.html << 'INDEXEOF'
       font-display: swap;
     }
     
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+
     
     body {
       background: #000;
@@ -114,7 +111,7 @@ cat > index.html << 'INDEXEOF'
     <h1>artifacts/</h1>
     <div class="meta">experimental web constructs</div>
   </div>
-  
+ 
   <div class="experiments">
 INDEXEOF
 
