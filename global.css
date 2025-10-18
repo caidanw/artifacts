@@ -1,11 +1,14 @@
 :root {
-  /* Neutral palette in OKLab (grays) */
+  /* Neutral palette in OKLCH (grays) */
   --bg: oklch(0 0 0);
   --fg: oklch(1 0 0);
   --border: oklch(0.22 0 0);
   --divider: oklch(0.18 0 0);
   --muted: oklch(0.6 0 0);
   --hover-bg: oklch(0.14 0 0);
+
+  /* Accent palette in OKLCH */
+  --accent: oklch(0.5829744346316188 0.22271700425126142 27.9266002055936);
 }
 
 body {
