@@ -31,12 +31,12 @@ for dir in [0-9][0-9][0-9]-*/; do
   [ -d "$dir" ] || continue
   [ -f "${dir}index.html" ] || continue
 
+  # Extract number and dirname
   dirname=$(basename "$dir")
+  number=$(echo "$dirname" | cut -d'-' -f1)
 
-  # Extract number and name from title
-  title=$(htmlq --text --filename "${dir}index.html" 'title')
-  number=$(echo "$title" | cut -d'-' -f1)
-  name=$(echo "$title" | cut -d'-' -f2- | tr '-' ' ')
+  # Extract name from title
+  name=$(htmlq --text --filename "${dir}index.html" 'title')
 
   # Try to extract date from meta tag
   date=$(htmlq --attribute content --filename "${dir}index.html" 'meta[name="date"]')
