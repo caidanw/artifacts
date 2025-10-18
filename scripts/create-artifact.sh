@@ -23,10 +23,10 @@ date=$(date +%Y-%m-%d)
 sed -e "s/{{TITLE}}/${name}/g" -e "s/{{DATE}}/${date}/g" scripts/template.html >"${dirname}/index.html"
 
 echo "✓ Created ${dirname}/"
-echo "  Opening in editor..."
 
 # Regenerate index
 ./scripts/generate-index.sh
 
 # Open the new file (adjust for your editor)
-${EDITOR:-nvim} "${dirname}/index.html"
+# echo "  Opening in editor..."
+# ${EDITOR:-nvim} "${dirname}/index.html"

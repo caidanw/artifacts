@@ -64,5 +64,5 @@ cat >>index.html <<'INDEXEOF'
 </html>
 INDEXEOF
 
-count=$(ls -d [0-9][0-9][0-9]-*/ 2>/dev/null | wc -l)
+count=$(ls -d [0-9][0-9][0-9]-*/ 2>/dev/null | wc -l | tr -d ' ')
 echo "✓ Generated index.html with ${count} experiments"
