@@ -6,14 +6,14 @@ highest=$(ls -d [0-9][0-9][0-9]-* 2>/dev/null | sed 's/-.*//' | sort -n | tail -
 next=$(printf "%03d" $((10#${highest:-0} + 1)))
 
 # Create directory with provided name
-name="$1"
+name="$*"
 if [ -z "$name" ]; then
 	echo "Error: Please provide an experiment name"
 	echo "Usage: mise run new <name>"
 	exit 1
 fi
 
-dirname="${next}-${name}"
+dirname="${next}-$(echo $name | tr ' ' '-')"
 mkdir -p "$dirname"
 
 # Get current date in YYYY-MM-DD format
