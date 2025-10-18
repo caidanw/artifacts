@@ -8,16 +8,22 @@ cat >index.html <<HEADER
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>artifacts/</title>
-  <link rel="stylesheet" href="reset.css">
-  <link rel="stylesheet" href="index.css">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/internet-development/www-server-mono@latest/server-mono.css"
+  />
+  <link rel="stylesheet" href="reset.css" />
+  <link rel="stylesheet" href="global.css" />
+  <link rel="stylesheet" href="index.css" />
 </head>
 <body>
-  <div class="header">
+  <hgroup>
     <h1>artifacts/</h1>
-    <div class="meta">experimental web constructs</div>
-  </div>
+    <p>experimental web constructs</p>
+  </hgroup>
  
-  <div class="artifacts">
+  <nav class="artifacts">
 HEADER
 
 # Find all experiment directories (format: 001-name)
@@ -42,9 +48,9 @@ for dir in [0-9][0-9][0-9]-*/; do
 
   cat >>index.html <<ENTRY
     <a href="${dirname}/" class="artifact">
-      <div class="number">${number}</div>
+      <span  class="number">${number}</span >
       <div class="info">
-        <div class="name">${name}</div>
+        <span  class="name">${name}</span >
         <time class="date" datetime="${date}">${display_date}</time>
       </div>
     </a>
@@ -53,7 +59,7 @@ ENTRY
 done
 
 cat >>index.html <<'INDEXEOF'
-  </div>
+  </nav>
 </body>
 </html>
 INDEXEOF
