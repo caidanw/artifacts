@@ -39,7 +39,7 @@ for dir in [0-9][0-9][0-9]-*/; do
   name=$(htmlq --text --filename "${dir}index.html" 'title')
 
   # Try to extract date from meta tag
-  date=$(htmlq --attribute content --filename "${dir}index.html" 'meta[name="date"]')
+  date=$(htmlq --attribute content --filename "${dir}index.html" 'meta[name="created"]')
 
   # Format date from YYYY-MM-DD to YYYY.MM.DD
   if [ -n "$date" ]; then
