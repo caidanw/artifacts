@@ -37,7 +37,7 @@ hgroup {
     background: var(--hover-bg);
 
     .number {
-      color: var(--fg);
+      color: var(--accent);
     }
   }
 }
