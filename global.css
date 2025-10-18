@@ -1,4 +1,6 @@
 :root {
+  font-size: 100%;
+
   /* Neutral palette in OKLCH (grays) */
   --bg: oklch(0 0 0);
   --fg: oklch(1 0 0);
@@ -9,6 +11,12 @@
 
   /* Accent palette in OKLCH */
   --accent: oklch(0.5829744346316188 0.22271700425126142 27.9266002055936);
+}
+
+@media (min-width: 1024px) {
+  :root {
+    font-size: 125%;
+  }
 }
 
 body {
