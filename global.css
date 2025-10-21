@@ -35,3 +35,10 @@ body {
   font-family: var(--font-mono);
   padding: 3rem 2rem;
 }
+
+hr {
+  border: none;
+  border-bottom: 1px solid var(--border);
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
