@@ -1,29 +1,31 @@
 :root {
-  --akira-red: #e12120;
+  --color-akira-red: #e12120;
 
   @media (color-gamut: p3) {
-    --akira-red: oklch(from #e12120 l calc(c + 0.027) h);
+    --color-akira-red: oklch(from #e12120 l calc(c + 0.027) h);
   }
 
-  /* Base Grays */
-  --gray-black: oklch(10% 0 0);
-  --gray-dark: oklch(17% 0 0);
-  --gray-border: oklch(25% 0 0);
-  --gray-muted: oklch(54% 0 0);
-  --gray-light: oklch(92% 0 0);
-  --gray-white: oklch(100% 0 0);
+  --color-white: oklch(92% 0 0);
+  --color-gray-lighter: oklch(82% 0 0);
+  --color-gray-light: oklch(68% 0 0);
+  --color-gray: oklch(54% 0 0);
+  --color-gray-dark: oklch(25% 0 0);
+  --color-gray-darker: oklch(17% 0 0);
+  --color-black: oklch(3% 0 0);
 
   /* Accents */
-  --accent: var(--akira-red);
-  --accent-hover: oklch(from var(--akira-red) calc(l + 7%) c h);
-  --accent-light: oklch(from var(--akira-red) calc(l - 14%) c h);
+  --accent: var(--color-akira-red);
+  --accent-light: oklch(from var(--accent) calc(l + 7%) c h);
+  --accent-dark: oklch(from var(--accent) calc(l - 14%) c h);
 
   /* Semantic tokens - dark theme */
-  --bg: var(--gray-black);
-  --bg-subtle: var(--gray-dark);
-  --text: var(--gray-light);
-  --text-muted: var(--gray-muted);
-  --border: var(--gray-border);
+  --text: var(--color-white);
+  --text-muted: var(--color-gray);
+  --text-faded: var(--color-gray-dark);
+  --bg: var(--color-black);
+  --bg-subtle: var(--color-gray-darker);
+  --bg-muted: var(--color-gray-dark);
+  --border: var(--color-gray-dark);
 
   /* Font families */
   --font-mono: "ServerMono", monospace;
