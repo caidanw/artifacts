@@ -18,6 +18,12 @@
         font-size: 100%;
         --base-color: var(--accent);
         --chroma-boost: 0;
+
+        /* Local syntax highlighting palette */
+        --syntax-keyword: oklch(70% 0.16 312);
+        --syntax-property: oklch(80% 0.12 210);
+        --syntax-value: oklch(78% 0.14 75);
+        --syntax-comment: var(--text-muted);
       }
 
       @media (color-gamut: p3) {
@@ -253,16 +259,16 @@
       }
 
       .keyword {
-        color: var(--accent);
+        color: var(--syntax-keyword);
       }
       .property {
-        color: var(--text);
+        color: var(--syntax-property);
       }
       .value-color {
-        color: var(--text-muted);
+        color: var(--syntax-value);
       }
       .comment {
-        color: var(--text-muted);
+        color: var(--syntax-comment);
       }
 
       .presets-section {
