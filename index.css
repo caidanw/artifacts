@@ -33,12 +33,8 @@ hgroup {
     border-bottom: 1px solid var(--divider);
   }
 
-  &:hover {
-    background: var(--hover-bg);
-
-    .number {
-      color: var(--accent);
-    }
+  &:hover .number {
+    color: var(--accent);
   }
 }
 
