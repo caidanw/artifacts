@@ -56,7 +56,6 @@
         font-size: 2rem;
         font-weight: 700;
         color: var(--text);
-        margin-bottom: 0.5rem;
       }
 
       .subtitle {
@@ -78,12 +77,11 @@
 
       .input-group label {
         display: block;
-        font-size: 0.75rem;
+        font-size: 1rem;
         font-weight: 600;
         color: var(--text-muted);
         margin-bottom: 0.5rem;
         text-transform: uppercase;
-        letter-spacing: 0.03125rem;
       }
 
       .hex-input-wrapper {
@@ -93,7 +91,7 @@
       .hex-input {
         width: 100%;
         padding: 1rem 1.25rem;
-        font-size: 1.25rem;
+        font-size: 1rem;
         font-family: var(--font-mono);
         font-weight: 600;
         background: var(--bg);
@@ -271,11 +269,10 @@
       }
 
       .presets-header {
-        font-size: 0.75rem;
+        font-size: 1rem;
         font-weight: 600;
         color: var(--text-muted);
         text-transform: uppercase;
-        letter-spacing: 0.03125rem;
         margin-bottom: 1rem;
       }
 
@@ -288,19 +285,19 @@
       }
 
       .category-label {
-        font-size: 0.6875rem;
+        font-size: 0.75rem;
         font-weight: 600;
         color: var(--text-muted);
         text-transform: uppercase;
         letter-spacing: 0.05rem;
-        margin-bottom: 0.625rem;
+        margin-bottom: 0.5rem;
         padding-left: 0.125rem;
       }
 
       .presets-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
-        gap: 0.625rem;
+        gap: 0.5rem;
       }
 
       .preset-chip {
@@ -327,7 +324,7 @@
       }
 
       .preset-info {
-        padding: 0.5rem 0.625rem;
+        padding: 0.5rem 0.5rem;
       }
 
       .preset-name {
@@ -356,14 +353,13 @@
         font-weight: 600;
         color: var(--text-muted);
         text-transform: uppercase;
-        letter-spacing: 0.03125rem;
         margin-bottom: 0.75rem;
       }
 
       .boost-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(5rem, 1fr));
-        gap: 0.625rem;
+        gap: 0.5rem;
       }
 
       .boost-item {
@@ -399,56 +395,6 @@
         font-weight: 600;
         font-family: var(--font-mono);
         color: var(--text);
-      }
-      @media (max-width: 37.5rem) {
-        body {
-          padding: 1.5rem 1rem;
-        }
-
-        header {
-          margin-bottom: 1rem;
-        }
-
-        .tool-section {
-          padding: 1rem;
-          margin-bottom: 1rem;
-        }
-
-        .hex-input {
-          font-size: 1.125rem;
-          padding: 0.75rem 1rem;
-        }
-
-        .color-preview-grid {
-          grid-template-columns: 1fr;
-          gap: 0.625rem;
-        }
-
-        .color-swatch {
-          height: 7rem;
-        }
-
-        .presets-header {
-          margin-bottom: 0.75rem;
-        }
-
-        .presets-grid {
-          grid-template-columns: repeat(auto-fill, minmax(6.25rem, 1fr));
-          gap: 0.5rem;
-        }
-
-        .preset-color {
-          height: 2.75rem;
-        }
-
-        .boost-grid {
-          grid-template-columns: repeat(auto-fit, minmax(4.75rem, 1fr));
-          gap: 0.5rem;
-        }
-
-        .boost-swatch {
-          height: 3.25rem;
-        }
       }
     </style>
   </head>
