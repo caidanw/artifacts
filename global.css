@@ -1,12 +1,4 @@
 :root {
-  font-size: 100%;
-
-  @media (min-width: 1024px) {
-    font-size: 125%;
-  }
-}
-
-:root {
   --akira-red: #e12120;
 
   @media (color-gamut: p3) {
