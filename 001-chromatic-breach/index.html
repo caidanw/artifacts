@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../global.css" />
     <style>
       :root {
-        --base-color: #e12120;
+        --base-color: #E12120;
         --chroma-boost: 0;
 
         /* Local syntax highlighting palette */
@@ -413,8 +413,8 @@
               type="text"
               id="hex-input"
               class="hex-input"
-              value="#e12120"
-              placeholder="#e12120"
+              value="#E12120"
+              placeholder="#E12120"
               spellcheck="false"
             />
           </div>
@@ -436,7 +436,7 @@
             <div class="color-swatch swatch-original"></div>
             <div class="color-info">
               <h3>Original (sRGB)</h3>
-              <div class="color-value" id="original-value">#e12120</div>
+              <div class="color-value" id="original-value">#E12120</div>
             </div>
           </div>
 
@@ -445,7 +445,7 @@
             <div class="color-info">
               <h3>Enhanced (P3)</h3>
               <div class="color-value" id="enhanced-value">
-                oklch(from #e12120 l calc(c + 0.067) h)
+                oklch(from #E12120 l calc(c + 0.067) h)
               </div>
             </div>
           </div>
@@ -501,7 +501,7 @@
       const boostLevels = [0.025, 0.05, 0.075, 0.1, 0.125, 0.15];
 
       const famousColors = [
-        { name: "Akira Red", hex: "#e12120", category: "Film & Media" },
+        { name: "Akira Red", hex: "#E12120", category: "Film & Media" },
         { name: "Blade Runner Yellow", hex: "#FFD700", category: "Film & Media" },
         { name: "Star Wars Yellow", hex: "#FFE81F", category: "Film & Media" },
         { name: "Matrix Green", hex: "#00FF41", category: "Film & Media" },
@@ -592,7 +592,7 @@
         const hex =
           document.documentElement.style
             .getPropertyValue("--base-color")
-            .trim() || "#e12120";
+            .trim() || "#E12120";
         const boost = parseFloat(chromaSlider.value);
         enhancedValue.textContent = `oklch(from ${hex} l calc(c + ${boost.toFixed(3)}) h)`;
       }
@@ -601,7 +601,7 @@
         const hex =
           document.documentElement.style
             .getPropertyValue("--base-color")
-            .trim() || "#e12120";
+            .trim() || "#E12120";
         const boost = parseFloat(chromaSlider.value);
 
         cssOutput.innerHTML = `<span class="keyword">:root</span> {
@@ -740,7 +740,7 @@
       updateGamutStatus();
       updateEnhancedValue();
       updateCSSOutput();
-      updateActivePreset("#e12120");
+      updateActivePreset("#E12120");
       updateActiveBoost(0.067);
     </script>
   </body>
