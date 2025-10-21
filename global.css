@@ -23,11 +23,13 @@
   --divider: oklch(18% 0 0);
   --muted: oklch(60% 0 0);
   --hover-bg: oklch(14% 0 0);
+
+  --font-mono: "ServerMono", monospace;
 }
 
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: "ServerMono", monospace;
+  font-family: var(--font-mono);
   padding: 3rem 2rem;
 }
