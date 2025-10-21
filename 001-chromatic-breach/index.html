@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="created" content="2025-10-20" />
+    <title>chromatic breach</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../reset.css" />
+    <link rel="stylesheet" href="../global.css" />
+      <style>
+      :root {
+        --base-color: var(--accent);
+        --chroma-boost: 0;
+      }
+
+      @media (color-gamut: p3) {
+        :root {
+          --chroma-boost: 0.067;
+        }
+      }
+
+      body {
+        font-family:
+          "Nunito",
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+      }
+
+      body {
+        max-width: 80ch;
+        margin: 0 auto;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--fg);
+        margin-bottom: 0.5rem;
+      }
+
+      .subtitle {
+        font-size: 0.875rem;
+        color: var(--muted);
+      }
+
+      .tool-section {
+        background: var(--hover-bg);
+        border-radius: 1rem;
+        padding: 2rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid var(--border);
+      }
+
+      .input-group {
+        margin-bottom: 2rem;
+      }
+
+      .input-group label {
+        display: block;
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--muted);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03125rem;
+      }
+
+      .hex-input-wrapper {
+        position: relative;
+      }
+
+      .hex-input {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        font-size: 2rem;
+        font-family: var(--font-mono);
+        font-weight: 600;
+        background: var(--bg);
+        border: 0.125rem solid var(--divider);
+        border-radius: 0.75rem;
+        color: var(--fg);
+        transition: border-color 0.2s;
+      }
+
+      .hex-input:focus {
+        outline: none;
+        border-color: oklch(from var(--base-color) l c h);
+      }
+
+      .color-preview-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .color-card {
+        background: var(--bg);
+        border-radius: 0.75rem;
+        overflow: hidden;
+        border: 1px solid var(--divider);
+      }
+
+      .color-swatch {
+        height: 10rem;
+        position: relative;
+      }
+
+      .swatch-original {
+        background: var(--base-color);
+      }
+
+      .swatch-enhanced {
+        background: oklch(
+          from var(--base-color) l calc(c + var(--chroma-boost)) h
+        );
+      }
+
+      .color-info {
+        padding: 1rem;
+      }
+
+      .color-info h3 {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.03125rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .color-value {
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        color: var(--fg);
+        background: var(--hover-bg);
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.375rem;
+        word-break: break-all;
+        line-height: 1.5;
+      }
+
+      .gamut-status {
+        text-align: center;
+        padding: 0.75rem;
+        background: var(--hover-bg);
+        border-radius: 0.5rem;
+        font-size: 0.8125rem;
+        color: var(--muted);
+        margin-bottom: 2rem;
+        border: 1px solid var(--divider);
+      }
+
+      .gamut-status strong {
+        color: var(--fg);
+      }
+
+      .slider-group {
+        margin-bottom: 2rem;
+      }
+
+      .slider-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+      }
+
+      .slider-label span:first-child {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.03125rem;
+      }
+
+      .slider-value {
+        font-family: var(--font-mono);
+        font-size: 0.9375rem;
+        font-weight: 700;
+        color: var(--fg);
+      }
+
+      .slider {
+        width: 100%;
+        height: 0.5rem;
+        border-radius: 0.25rem;
+        background: var(--bg);
+        outline: none;
+        appearance: none;
+        cursor: pointer;
+        border: 1px solid var(--divider);
+      }
+
+      .slider::-webkit-slider-thumb {
+        appearance: none;
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 50%;
+        background: oklch(from var(--base-color) l c h);
+        cursor: pointer;
+        border: 0.125rem solid var(--bg);
+      }
+
+      .slider::-moz-range-thumb {
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 50%;
+        background: oklch(from var(--base-color) l c h);
+        cursor: pointer;
+        border: 0.125rem solid var(--bg);
+      }
+
+      .code-section {
+        background: var(--hover-bg);
+        border-radius: 0.75rem;
+        padding: 1.25rem;
+        border: 1px solid var(--divider);
+      }
+
+      .code-header {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.03125rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .code-block {
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        line-height: 1.7;
+        color: var(--fg);
+        overflow-x: auto;
+        white-space: pre;
+      }
+
+      .keyword {
+        color: var(--accent);
+      }
+      .property {
+        color: var(--fg);
+      }
+      .value-color {
+        color: var(--muted);
+      }
+      .comment {
+        color: var(--muted);
+      }
+
+      .presets-section {
+        margin-bottom: 2rem;
+      }
+
+      .presets-header {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.03125rem;
+        margin-bottom: 1rem;
+      }
+
+      .category-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .category-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .category-label {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+        margin-bottom: 0.625rem;
+        padding-left: 0.125rem;
+      }
+
+      .presets-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(8.75rem, 1fr));
+        gap: 0.625rem;
+      }
+
+      .preset-chip {
+        cursor: pointer;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        border: 0.125rem solid transparent;
+        transition: all 0.2s;
+        background: var(--bg);
+      }
+
+      .preset-chip:hover {
+        border-color: var(--border);
+        transform: translateY(-0.125rem);
+      }
+
+      .preset-chip.active {
+        border-color: var(--fg);
+      }
+
+      .preset-color {
+        height: 3.75rem;
+        width: 100%;
+      }
+
+      .preset-info {
+        padding: 0.5rem 0.625rem;
+      }
+
+      .preset-name {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        color: var(--fg);
+        margin-bottom: 0.125rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .preset-hex {
+        font-size: 0.625rem;
+        font-family: var(--font-mono);
+        color: var(--muted);
+      }
+
+      .boost-presets {
+        margin-bottom: 2rem;
+      }
+
+      .boost-presets-header {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.03125rem;
+        margin-bottom: 0.75rem;
+      }
+
+      .boost-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(6.25rem, 1fr));
+        gap: 0.625rem;
+      }
+
+      .boost-item {
+        cursor: pointer;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        border: 0.125rem solid var(--divider);
+        transition: all 0.2s;
+        background: var(--bg);
+      }
+
+      .boost-item:hover {
+        border-color: var(--border);
+        transform: translateY(-0.125rem);
+      }
+
+      .boost-item.active {
+        border-color: var(--fg);
+      }
+
+      .boost-swatch {
+        height: 4.375rem;
+        width: 100%;
+      }
+
+      .boost-label {
+        padding: 0.5rem;
+        text-align: center;
+      }
+
+      .boost-value-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        font-family: var(--font-mono);
+        color: var(--fg);
+      }
+
+      @media (max-width: 37.5rem) {
+        .color-preview-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hex-input {
+          font-size: 1.25rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Chromatic Breach</h1>
+        <p class="subtitle">Enhance colors for Display P3 & Rec.2020</p>
+      </header>
+
+      <div class="tool-section">
+        <div class="input-group">
+          <label for="hex-input">Hex Color</label>
+          <div class="hex-input-wrapper">
+            <input
+              type="text"
+              id="hex-input"
+              class="hex-input"
+              value="#e12120"
+              placeholder="#e12120"
+              spellcheck="false"
+            />
+          </div>
+        </div>
+
+        <div class="presets-section">
+          <div class="presets-header">Famous Colors</div>
+          <div id="presets-container"></div>
+        </div>
+
+        <div class="gamut-status" id="gamut-status">
+          Detecting display capabilities...
+        </div>
+
+        <div class="color-preview-grid">
+          <div class="color-card">
+            <div class="color-swatch swatch-original"></div>
+            <div class="color-info">
+              <h3>Original (sRGB)</h3>
+              <div class="color-value" id="original-value">#e12120</div>
+            </div>
+          </div>
+
+          <div class="color-card">
+            <div class="color-swatch swatch-enhanced"></div>
+            <div class="color-info">
+              <h3>Enhanced (P3)</h3>
+              <div class="color-value" id="enhanced-value">
+                oklch(from #e12120 l calc(c + 0.067) h)
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-label">
+            <span>Chroma Boost</span>
+            <span class="slider-value" id="boost-value">+0.067</span>
+          </div>
+          <input
+            type="range"
+            id="chroma-slider"
+            class="slider"
+            min="0"
+            max="0.15"
+            step="0.001"
+            value="0.067"
+          />
+        </div>
+
+        <div class="boost-presets">
+          <div class="boost-presets-header">Common Boost Levels</div>
+          <div class="boost-grid" id="boost-grid"></div>
+        </div>
+
+        <div class="code-section">
+          <div class="code-header">CSS Output</div>
+          <div class="code-block" id="css-output">
+            <span class="keyword">:root</span> {
+            <span class="property">--base-color</span>:
+            <span class="value-color">#e12120</span>;
+            <span class="property">--chroma-boost</span>:
+            <span class="value-color">0</span>; }
+
+            <span class="keyword">@media (color-gamut: p3)</span> {
+            <span class="keyword">:root</span> {
+            <span class="property">--chroma-boost</span>:
+            <span class="value-color">0.067</span>; } }
+
+            <span class="keyword">.my-color</span> {
+            <span class="property">background</span>:
+            <span class="value-color"
+              >oklch(from var(--base-color) l calc(c + var(--chroma-boost))
+              h)</span
+            >; }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const boostLevels = [0.025, 0.05, 0.075, 0.1, 0.125, 0.15];
+
+      const famousColors = [
+        { name: "Akira Red", hex: "#e12120", category: "Film & Media" },
+        {
+          name: "Blade Runner Yellow",
+          hex: "#FFD700",
+          category: "Film & Media",
+        },
+        { name: "Star Wars Yellow", hex: "#FFE81F", category: "Film & Media" },
+        { name: "Matrix Green", hex: "#00FF41", category: "Film & Media" },
+        { name: "Coca-Cola Red", hex: "#F40009", category: "Brand" },
+        { name: "Ferrari Red", hex: "#FF2800", category: "Brand" },
+        { name: "Hermès Orange", hex: "#FF7A00", category: "Brand" },
+        { name: "Spotify Green", hex: "#1DB954", category: "Brand" },
+        { name: "Tiffany Blue", hex: "#0ABAB5", category: "Brand" },
+        { name: "Barbie Pink", hex: "#E0218A", category: "Brand" },
+        { name: "Klein Blue", hex: "#002FA7", category: "Art & Design" },
+        { name: "Rothko Red", hex: "#8B0000", category: "Art & Design" },
+        { name: "Schiaparelli Pink", hex: "#FF00FF", category: "Art & Design" },
+        { name: "Safety Orange", hex: "#FF6700", category: "Cultural" },
+        { name: "Chromium Orange", hex: "#FFA040", category: "Cultural" },
+      ];
+
+      const hexInput = document.getElementById("hex-input");
+      const chromaSlider = document.getElementById("chroma-slider");
+      const boostValue = document.getElementById("boost-value");
+      const gamutStatus = document.getElementById("gamut-status");
+      const originalValue = document.getElementById("original-value");
+      const enhancedValue = document.getElementById("enhanced-value");
+      const cssOutput = document.getElementById("css-output");
+      const presetsContainer = document.getElementById("presets-container");
+      const boostGrid = document.getElementById("boost-grid");
+
+      // Detect color gamut
+      const hasP3 = window.matchMedia("(color-gamut: p3)").matches;
+      const hasRec2020 = window.matchMedia("(color-gamut: rec2020)").matches;
+
+      function updateGamutStatus() {
+        if (hasRec2020) {
+          gamutStatus.innerHTML =
+            "<strong>✓ Rec. 2020 Display</strong> — Enhanced colors active";
+        } else if (hasP3) {
+          gamutStatus.innerHTML =
+            "<strong>✓ Display P3</strong> — Enhanced colors active";
+        } else {
+          gamutStatus.innerHTML =
+            "<strong>sRGB Display</strong> — Base colors only";
+        }
+      }
+
+      function isValidHex(hex) {
+        return /^#[0-9A-F]{6}$/i.test(hex);
+      }
+
+      function updateColor() {
+        let hex = hexInput.value.trim();
+
+        // Add # if missing
+        if (hex.charAt(0) !== "#") {
+          hex = "#" + hex;
+        }
+
+        if (isValidHex(hex)) {
+          document.documentElement.style.setProperty("--base-color", hex);
+          originalValue.textContent = hex;
+          updateEnhancedValue();
+          updateCSSOutput();
+          updateBoostGrid();
+          hexInput.style.borderColor = "#333";
+          updateActivePreset(hex);
+        } else {
+          hexInput.style.borderColor = "#e12120";
+        }
+      }
+
+      function updateChromaBoost() {
+        const boost = parseFloat(chromaSlider.value);
+        document.documentElement.style.setProperty("--chroma-boost", boost);
+        boostValue.textContent = `+${boost.toFixed(3)}`;
+        updateEnhancedValue();
+        updateCSSOutput();
+        updateActiveBoost(boost);
+      }
+
+      function updateEnhancedValue() {
+        const hex =
+          document.documentElement.style
+            .getPropertyValue("--base-color")
+            .trim() || "#e12120";
+        const boost = parseFloat(chromaSlider.value);
+        enhancedValue.textContent = `oklch(from ${hex} l calc(c + ${boost.toFixed(3)}) h)`;
+      }
+
+      function updateCSSOutput() {
+        const hex =
+          document.documentElement.style
+            .getPropertyValue("--base-color")
+            .trim() || "#e12120";
+        const boost = parseFloat(chromaSlider.value);
+
+        cssOutput.innerHTML = `<span class="keyword">:root</span> {
+  <span class="property">--my-color</span>: <span class="value-color">oklch(from ${hex} l c h)</span>;
+}
+
+<span class="keyword">@media (color-gamut: p3)</span> {
+  <span class="keyword">:root</span> {
+    <span class="property">--my-color</span>: <span class="value-color">oklch(from ${hex} l calc(c + ${boost.toFixed(3)}) h)</span>;
+  }
+}`;
+      }
+
+      function updateActivePreset(hex) {
+        const chips = document.querySelectorAll(".preset-chip");
+        chips.forEach((chip) => {
+          if (chip.dataset.hex.toLowerCase() === hex.toLowerCase()) {
+            chip.classList.add("active");
+          } else {
+            chip.classList.remove("active");
+          }
+        });
+      }
+
+      function selectPreset(hex) {
+        hexInput.value = hex;
+        updateColor();
+      }
+
+      function initializeBoostGrid() {
+        boostGrid.innerHTML = "";
+        boostLevels.forEach((boost) => {
+          const item = document.createElement("div");
+          item.className = "boost-item";
+          item.dataset.boost = boost;
+          item.innerHTML = `
+                    <div class="boost-swatch" style="background: oklch(from var(--base-color) l calc(c + ${boost}) h)"></div>
+                    <div class="boost-label">
+                        <div class="boost-value-label">+${boost.toFixed(3)}</div>
+                    </div>
+                `;
+          item.addEventListener("click", () => selectBoost(boost));
+          boostGrid.appendChild(item);
+        });
+      }
+
+      function updateBoostGrid() {
+        const items = boostGrid.querySelectorAll(".boost-item");
+        items.forEach((item, index) => {
+          const boost = boostLevels[index];
+          const swatch = item.querySelector(".boost-swatch");
+          swatch.style.background = `oklch(from var(--base-color) l calc(c + ${boost}) h)`;
+        });
+      }
+
+      function updateActiveBoost(currentBoost) {
+        const items = boostGrid.querySelectorAll(".boost-item");
+        items.forEach((item) => {
+          const itemBoost = parseFloat(item.dataset.boost);
+          if (Math.abs(itemBoost - currentBoost) < 0.001) {
+            item.classList.add("active");
+          } else {
+            item.classList.remove("active");
+          }
+        });
+      }
+
+      function selectBoost(boost) {
+        chromaSlider.value = boost;
+        updateChromaBoost();
+      }
+
+      function initializePresets() {
+        presetsContainer.innerHTML = "";
+
+        // Group colors by category
+        const categories = {};
+        famousColors.forEach((color) => {
+          if (!categories[color.category]) {
+            categories[color.category] = [];
+          }
+          categories[color.category].push(color);
+        });
+
+        // Define category order
+        const categoryOrder = [
+          "Film & Media",
+          "Brand",
+          "Art & Design",
+          "Cultural",
+        ];
+
+        // Render each category
+        categoryOrder.forEach((categoryName) => {
+          if (!categories[categoryName]) return;
+
+          const categoryGroup = document.createElement("div");
+          categoryGroup.className = "category-group";
+
+          const categoryLabel = document.createElement("div");
+          categoryLabel.className = "category-label";
+          categoryLabel.textContent = categoryName;
+          categoryGroup.appendChild(categoryLabel);
+
+          const grid = document.createElement("div");
+          grid.className = "presets-grid";
+
+          categories[categoryName].forEach((color) => {
+            const chip = document.createElement("div");
+            chip.className = "preset-chip";
+            chip.dataset.hex = color.hex;
+            chip.innerHTML = `
+                        <div class="preset-color" style="background: ${color.hex}"></div>
+                        <div class="preset-info">
+                            <div class="preset-name">${color.name}</div>
+                            <div class="preset-hex">${color.hex}</div>
+                        </div>
+                    `;
+            chip.addEventListener("click", () => selectPreset(color.hex));
+            grid.appendChild(chip);
+          });
+
+          categoryGroup.appendChild(grid);
+          presetsContainer.appendChild(categoryGroup);
+        });
+      }
+
+      // Event listeners
+      hexInput.addEventListener("input", updateColor);
+      chromaSlider.addEventListener("input", updateChromaBoost);
+
+      // Initialize
+      initializePresets();
+      initializeBoostGrid();
+      updateGamutStatus();
+      updateEnhancedValue();
+      updateCSSOutput();
+      updateActivePreset("#e12120");
+      updateActiveBoost(0.067);
+    </script>
+  </body>
+</html>
