@@ -50,6 +50,7 @@ hgroup {
   font-size: 2rem;
   text-box-trim: trim-both;
   color: color-mix(in oklab, var(--text-muted), transparent 70%);
+  color: var(--text-faded);
   transition: color 0.2s ease;
 }
 
