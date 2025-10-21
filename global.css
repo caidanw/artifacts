@@ -13,23 +13,33 @@
     --akira-red: oklch(from #e12120 l calc(c + 0.027) h);
   }
 
-  /* Accent palette */
+  /* Base Grays */
+  --gray-black: oklch(10% 0 0);
+  --gray-dark: oklch(17% 0 0);
+  --gray-border: oklch(25% 0 0);
+  --gray-muted: oklch(54% 0 0);
+  --gray-light: oklch(92% 0 0);
+  --gray-white: oklch(100% 0 0);
+
+  /* Accents */
   --accent: var(--akira-red);
+  --accent-hover: oklch(from var(--akira-red) calc(l + 0.07) c h);
+  --accent-light: oklch(from var(--akira-red) 25% calc(c * 0.35) h);
 
-  /* Neutral palette (grays) */
-  --bg: oklch(0% 0 0);
-  --fg: oklch(100% 0 0);
-  --border: oklch(22% 0 0);
-  --divider: oklch(18% 0 0);
-  --muted: oklch(60% 0 0);
-  --hover-bg: oklch(14% 0 0);
+  /* Semantic tokens - dark theme */
+  --bg: var(--gray-black);
+  --bg-subtle: var(--gray-dark);
+  --text: var(--gray-light);
+  --text-muted: var(--gray-muted);
+  --border: var(--gray-border);
 
+  /* Font families */
   --font-mono: "ServerMono", monospace;
 }
 
 body {
   background: var(--bg);
-  color: var(--fg);
+  color: var(--text);
   font-family: var(--font-mono);
   padding: 3rem 2rem;
 }
