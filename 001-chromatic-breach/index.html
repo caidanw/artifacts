@@ -474,25 +474,7 @@
 
         <div class="code-section">
           <div class="code-header">CSS Output</div>
-          <div class="code-block" id="css-output">
-            <span class="keyword">:root</span> {
-            <span class="property">--base-color</span>:
-            <span class="value-color">#e12120</span>;
-            <span class="property">--chroma-boost</span>:
-            <span class="value-color">0</span>; }
-
-            <span class="keyword">@media (color-gamut: p3)</span> {
-            <span class="keyword">:root</span> {
-            <span class="property">--chroma-boost</span>:
-            <span class="value-color">0.067</span>; } }
-
-            <span class="keyword">.my-color</span> {
-            <span class="property">background</span>:
-            <span class="value-color"
-              >oklch(from var(--base-color) l calc(c + var(--chroma-boost))
-              h)</span
-            >; }
-          </div>
+          <div class="code-block" id="css-output"></div>
         </div>
       </div>
     </div>
@@ -605,7 +587,7 @@
         const boost = parseFloat(chromaSlider.value);
 
         cssOutput.innerHTML = `<span class="keyword">:root</span> {
-  <span class="property">--my-color</span>: <span class="value-color">oklch(from ${hex} l c h)</span>;
+  <span class="property">--my-color</span>: <span class="value-color">${hex}</span>;
 }
 
 <span class="keyword">@media (color-gamut: p3)</span> {
