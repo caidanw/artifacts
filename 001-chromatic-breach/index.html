@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="../global.css" />
     <style>
       :root {
-        --base-color: #E12120;
+        --base-color: #e12120;
         --chroma-boost: 0;
 
         /* Local syntax highlighting palette */
@@ -84,6 +84,7 @@
         display: block;
         font-size: 1rem;
         font-weight: 600;
+        letter-spacing: 1px;
         color: var(--text-muted);
         margin-bottom: 0.5rem;
         text-transform: uppercase;
@@ -100,7 +101,7 @@
         font-family: var(--font-mono);
         font-weight: 600;
         background: var(--bg);
-        border: 0.125rem solid var(--border);
+        border: 2px solid var(--border);
         border-radius: 0.75rem;
         color: var(--text);
         transition: border-color 0.2s;
@@ -108,7 +109,7 @@
 
       .hex-input:focus {
         outline: none;
-        border-color: oklch(from var(--base-color) l c h);
+        border-color: var(--base-color);
       }
 
       .color-preview-grid {
@@ -153,7 +154,7 @@
         font-weight: 600;
         color: var(--text-muted);
         text-transform: uppercase;
-        letter-spacing: 0.03125rem;
+        letter-spacing: 1px;
         margin-bottom: 0.5rem;
       }
 
@@ -186,16 +187,15 @@
       .slider-label {
         display: flex;
         justify-content: space-between;
-        align-items: center;
         margin-bottom: 0.75rem;
       }
 
       .slider-label span:first-child {
-        font-size: 0.75rem;
+        font-size: 1rem;
         font-weight: 600;
         color: var(--text-muted);
         text-transform: uppercase;
-        letter-spacing: 0.03125rem;
+        letter-spacing: 1px;
       }
 
       .slider-value {
@@ -221,18 +221,18 @@
         width: 1.25rem;
         height: 1.25rem;
         border-radius: 50%;
-        background: oklch(from var(--base-color) l c h);
+        background: var(--base-color);
         cursor: pointer;
-        border: 0.125rem solid var(--bg);
+        border: 2px solid var(--bg);
       }
 
       .slider::-moz-range-thumb {
         width: 1.25rem;
         height: 1.25rem;
         border-radius: 50%;
-        background: oklch(from var(--base-color) l c h);
+        background: var(--base-color);
         cursor: pointer;
-        border: 0.125rem solid var(--bg);
+        border: 2px solid var(--bg);
       }
 
       .code-section {
@@ -240,15 +240,17 @@
         border-radius: 0.75rem;
         padding: 1.25rem;
         border: 1px solid var(--border);
+        user-select: all;
       }
 
       .code-header {
         font-size: 0.75rem;
         font-weight: 600;
+        letter-spacing: 1px;
         color: var(--text-muted);
         text-transform: uppercase;
-        letter-spacing: 0.03125rem;
         margin-bottom: 0.75rem;
+        user-select: none;
       }
 
       .code-block {
@@ -280,6 +282,7 @@
       .presets-header {
         font-size: 1rem;
         font-weight: 600;
+        letter-spacing: 1px;
         color: var(--text-muted);
         text-transform: uppercase;
         margin-bottom: 1rem;
@@ -358,8 +361,9 @@
       }
 
       .boost-presets-header {
-        font-size: 0.75rem;
+        font-size: 1rem;
         font-weight: 600;
+        letter-spacing: 1px;
         color: var(--text-muted);
         text-transform: uppercase;
         margin-bottom: 0.75rem;
