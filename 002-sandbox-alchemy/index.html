@@ -625,7 +625,7 @@
 
       // Game state
       const game = {
-        sandCollected: 0,
+        sandCollected: 100, // Give starting sand for testing
         currentMaterial: "sand",
         brushSize: 1,
         unlockedMaterials: new Set(["sand"]),
@@ -1153,7 +1153,7 @@
           game.prestige.hasPrestiged = true;
 
           // Reset everything except prestige data
-          game.sandCollected = 0;
+          game.sandCollected = 50; // Give some starting sand after prestige
           game.prestige.currentRunSand = 0;
           game.currentMaterial = "sand";
           game.brushSize = 1;
