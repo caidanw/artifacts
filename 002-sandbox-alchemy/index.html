@@ -356,14 +356,79 @@
          }
        }
 
-       /* Discovery notification animation */
-       @keyframes fadeInOut {
-         0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-         15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-         20% { transform: translate(-50%, -50%) scale(1); }
-         80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-         100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-       }
+        /* Discovery notification animation */
+        @keyframes fadeInOut {
+          0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+          15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+          20% { transform: translate(-50%, -50%) scale(1); }
+          80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+          100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        }
+
+        /* Prestige panel styling */
+        #prestigePanel {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          padding: 15px;
+          border-radius: 8px;
+          margin-top: 20px;
+          border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        #prestigePanel h2 {
+          margin: 0 0 15px 0;
+          text-align: center;
+          font-size: 18px;
+        }
+
+        #prestigeStats {
+          margin-bottom: 15px;
+        }
+
+        #prestigeStats .stat {
+          margin-bottom: 8px;
+        }
+
+        #prestigeButton {
+          width: 100%;
+          padding: 15px;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-radius: 8px;
+          background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+          color: white;
+          font-weight: bold;
+          cursor: pointer;
+          transition: all 0.3s;
+          text-align: center;
+        }
+
+        #prestigeButton:hover:not(.disabled) {
+          background: linear-gradient(135deg, #d35400 0%, #e67e22 100%);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+        }
+
+        #prestigeButton.disabled {
+          background: rgba(255, 255, 255, 0.1);
+          border-color: rgba(255, 255, 255, 0.1);
+          cursor: not-allowed;
+          opacity: 0.5;
+        }
+
+        .upgrade-name {
+          font-size: 16px;
+          margin-bottom: 5px;
+        }
+
+        .upgrade-desc {
+          font-size: 12px;
+          opacity: 0.9;
+          margin-bottom: 5px;
+        }
+
+        .upgrade-cost {
+          font-size: 14px;
+          font-weight: bold;
+        }
     </style>
   </head>
   <body>
@@ -395,12 +460,35 @@
                <span class="stat-label">Auto-Clickers:</span>
                <span class="stat-value" id="autoClickerCount">0</span>
              </div>
-             <div class="stat">
-               <span class="stat-label">Particles:</span>
-               <span class="stat-value" id="particleCount">0</span>
-             </div>
-           </div>
-         </div>
+              <div class="stat">
+                <span class="stat-label">Particles:</span>
+                <span class="stat-value" id="particleCount">0</span>
+              </div>
+            </div>
+          </div>
+
+          <div id="prestigePanel">
+            <h2>🌟 Dimensional Shift</h2>
+            <div id="prestigeStats">
+              <div class="stat">
+                <span class="stat-label">Catalysts:</span>
+                <span class="stat-value" id="catalystCount">0</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Collection Bonus:</span>
+                <span class="stat-value" id="collectionBonus">+0%</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Total Sand Lifetime:</span>
+                <span class="stat-value" id="totalSandLifetime">0</span>
+              </div>
+            </div>
+            <div id="prestigeButton" class="upgrade-button disabled" onclick="attemptPrestige()">
+              <div class="upgrade-name">🌌 Dimensional Shift</div>
+              <div class="upgrade-desc">Reset reality for Catalysts (Requires 10,000 sand)</div>
+              <div class="upgrade-cost">+<span id="prestigeGain">0</span> Catalysts</div>
+            </div>
+          </div>
 
         <div id="materialControls">
           <div id="currentMaterial">
@@ -567,9 +655,10 @@
         reactions: new Map(), // Track active reactions
         materialCombos: new Map(), // Track discovered combinations
         prestige: {
-          level: 0,
-          points: 0,
-          multiplier: 1
+          catalysts: 0,
+          totalSandLifetime: 0, // Total sand collected across all runs
+          currentRunSand: 0,    // Sand collected this run only
+          hasPrestiged: false   // Track if player has ever prestiged
         }
       };
 
@@ -818,6 +907,48 @@
           unlockCost: 0,
           baseValue: 20,
         },
+        // Quantum Materials (unlocked after first prestige)
+        void: {
+          name: "🌌 Void",
+          color: "#1a1a1a",
+          density: 0,
+          fallSpeed: 0,
+          spreadChance: 0.1,
+          flammable: false,
+          liquid: false,
+          absorbs: true, // Special property: absorbs nearby particles
+          placementCost: 10,
+          unlockCost: 0, // Unlocked via prestige
+          baseValue: 5,
+        },
+        plasma: {
+          name: "⚡ Plasma",
+          color: "#ff00ff",
+          density: 1,
+          fallSpeed: -0.5,
+          spreadChance: 0.8,
+          flammable: false,
+          liquid: false,
+          converts: true, // Special property: converts particles to sand
+          lifetime: 300,
+          placementCost: 15,
+          unlockCost: 0, // Unlocked via prestige
+          baseValue: 0,
+        },
+        crystal: {
+          name: "🔮 Crystal",
+          color: "#00ffff",
+          density: 8,
+          fallSpeed: 0,
+          spreadChance: 0,
+          flammable: false,
+          liquid: false,
+          isPlatform: true,
+          multiplier: 10, // Massive collection multiplier
+          placementCost: 20,
+          unlockCost: 0, // Unlocked via prestige
+          baseValue: 0,
+        },
       };
 
       // Material Reaction System - Enhanced meaningful interactions
@@ -893,7 +1024,7 @@
            // Trigger reaction
            if (reaction.result === "explosion") {
              // Special explosion handling
-             game.sandCollected += 25 * game.collectionMultiplier;
+              collectSand(25 * game.collectionMultiplier * getCatalystBonus());
              createExplosion(x, y);
            } else if (reaction.result === "enhanced_sand") {
              // Enhanced sand - create regular sand but mark it
@@ -910,7 +1041,7 @@
            const comboKey = key1 in materialReactions ? key1 : key2;
            if (!comboDiscoveries.has(comboKey)) {
              comboDiscoveries.set(comboKey, true);
-             game.sandCollected += reaction.discoveryBonus;
+              collectSand(reaction.discoveryBonus * getCatalystBonus());
              showDiscoveryNotification(reaction.description, reaction.discoveryBonus);
            }
 
@@ -973,8 +1104,91 @@
            if (notification.parentNode) {
              notification.parentNode.removeChild(notification);
            }
-         }, 3000);
-       }
+          }, 3000);
+        }
+
+        // Helper function to collect sand and track prestige progress
+        function collectSand(amount) {
+          game.sandCollected += amount;
+          game.prestige.currentRunSand += amount;
+          game.prestige.totalSandLifetime += amount;
+        }
+
+        // Calculate catalyst bonus
+        function getCatalystBonus() {
+          return 1 + (game.prestige.catalysts * 0.05);
+        }
+
+        // Calculate potential catalyst gain
+        function calculateCatalystGain() {
+          return Math.floor(game.prestige.totalSandLifetime / 1000);
+        }
+
+        // Prestige functions
+        function canPrestige() {
+          return game.sandCollected >= 10000;
+        }
+
+        function attemptPrestige() {
+          if (!canPrestige()) {
+            console.log("Need at least 10,000 sand to perform Dimensional Shift!");
+            return;
+          }
+
+          const catalystGain = calculateCatalystGain() - game.prestige.catalysts;
+          if (catalystGain <= 0) {
+            console.log("No additional catalysts would be gained from prestige!");
+            return;
+          }
+
+          if (confirm(`Perform Dimensional Shift?\n\nThis will reset all progress but grant ${catalystGain} Catalysts for +${catalystGain * 5}% permanent collection bonus.\n\nCurrent bonus: +${game.prestige.catalysts * 5}%\nNew bonus: +${calculateCatalystGain() * 5}%`)) {
+            performPrestige();
+          }
+        }
+
+        function performPrestige() {
+          // Calculate and award catalysts
+          const newCatalysts = calculateCatalystGain();
+          game.prestige.catalysts = newCatalysts;
+          game.prestige.hasPrestiged = true;
+
+          // Reset everything except prestige data
+          game.sandCollected = 0;
+          game.prestige.currentRunSand = 0;
+          game.currentMaterial = "sand";
+          game.brushSize = 1;
+          game.unlockedMaterials = new Set(["sand"]);
+          
+          // Reset grid
+          game.grid = Array(ROWS).fill().map(() => Array(COLS).fill(null));
+          
+          // Reset idle mechanics
+          game.autoClickers = 0;
+          game.autoClickerTimer = 0;
+          game.droppers = [];
+          
+          // Reset upgrades
+          Object.values(upgrades).forEach(upgrade => {
+            upgrade.level = 0;
+          });
+
+          // Reset research
+          game.research = {
+            autoCollection: 0,
+            materialEfficiency: 0,
+            reactionSpeed: 0,
+            automation: 0
+          };
+
+          // Unlock quantum materials if this isn't the first prestige
+          if (game.prestige.catalysts > 0) {
+            game.unlockedMaterials.add("void");
+            game.unlockedMaterials.add("plasma");
+            game.unlockedMaterials.add("crystal");
+          }
+
+          console.log(`🌌 Dimensional Shift complete! Gained ${newCatalysts} Catalysts (+${newCatalysts * 5}% collection bonus)`);
+        }
 
       // Particle class
       class Particle {
@@ -1370,11 +1584,11 @@
                  }
                  collectionValue *= platformMultiplier;
 
-                 game.sandCollected += collectionValue * baseValue;
+                  collectSand(collectionValue * baseValue * getCatalystBonus());
                  game.grid[y][x] = null;
                } else if (baseValue > 0) {
                  // Other valuable materials
-                 game.sandCollected += collectionValue * baseValue;
+                  collectSand(collectionValue * baseValue * getCatalystBonus());
                  game.grid[y][x] = null;
                } else if (particle.type === "stone" || particle.type === "obsidian") {
                  // Platforms stay at bottom as permanent platforms
@@ -1387,7 +1601,7 @@
 
             // Ember passive generation (anywhere on screen)
             if (particle.type === "ember" && Math.random() < 0.01) {
-              game.sandCollected += game.collectionMultiplier * 0.1;
+              collectSand(game.collectionMultiplier * 0.1 * getCatalystBonus());
             } else if (mat.fallSpeed < 0) {
               // Rising particles (fire, steam)
               if (tryMove(particle, x, y, 0, -1)) continue;
@@ -1634,7 +1848,38 @@
              if (game.grid[y][x]) particleCount++;
            }
          }
-         document.getElementById("particleCount").textContent = particleCount;
+          document.getElementById("particleCount").textContent = particleCount;
+
+          // Update prestige UI
+          const catalystElement = document.getElementById("catalystCount");
+          if (catalystElement) {
+            catalystElement.textContent = game.prestige.catalysts;
+          }
+
+          const bonusElement = document.getElementById("collectionBonus");
+          if (bonusElement) {
+            bonusElement.textContent = `+${(game.prestige.catalysts * 5).toFixed(1)}%`;
+          }
+
+          const lifetimeElement = document.getElementById("totalSandLifetime");
+          if (lifetimeElement) {
+            lifetimeElement.textContent = Math.floor(game.prestige.totalSandLifetime);
+          }
+
+          const prestigeButton = document.getElementById("prestigeButton");
+          const prestigeGain = document.getElementById("prestigeGain");
+          if (prestigeButton && prestigeGain) {
+            const canPerformPrestige = canPrestige();
+            const catalystGain = Math.max(0, calculateCatalystGain() - game.prestige.catalysts);
+            
+            prestigeGain.textContent = catalystGain;
+            
+            if (canPerformPrestige && catalystGain > 0) {
+              prestigeButton.classList.remove("disabled");
+            } else {
+              prestigeButton.classList.add("disabled");
+            }
+          }
        }
 
        // Auto-clicker functionality
@@ -1658,9 +1903,53 @@
              if (game.autoClickers > 0 && frameCount % 300 === 0) {
                console.log(`Auto-clickers working: ${game.autoClickers} clickers, speed: ${game.autoClickerSpeed}`);
              }
-           }
-         }
-       }
+                }
+              }
+            }
+
+            // Quantum Material Special Behaviors
+            if (particle.type === "void") {
+              // Void absorbs nearby particles and grows larger
+              for (let dy = -2; dy <= 2; dy++) {
+                for (let dx = -2; dx <= 2; dx++) {
+                  const nx = x + dx;
+                  const ny = y + dy;
+                  if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS && (dx !== 0 || dy !== 0)) {
+                    const neighbor = game.grid[ny][nx];
+                    if (neighbor && neighbor.type !== "void" && Math.random() < 0.05) {
+                      game.grid[ny][nx] = null;
+                      collectSand(materials[neighbor.type].baseValue * 2 * getCatalystBonus());
+                      // Randomly spawn more void particles nearby
+                      if (Math.random() < 0.1) {
+                        const voidX = x + Math.floor(Math.random() * 3) - 1;
+                        const voidY = y + Math.floor(Math.random() * 3) - 1;
+                        if (voidX >= 0 && voidX < COLS && voidY >= 0 && voidY < ROWS && !game.grid[voidY][voidX]) {
+                          game.grid[voidY][voidX] = new Particle(voidX, voidY, "void");
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            if (particle.type === "plasma") {
+              // Plasma converts other particles into sand rapidly
+              for (let dy = -1; dy <= 1; dy++) {
+                for (let dx = -1; dx <= 1; dx++) {
+                  const nx = x + dx;
+                  const ny = y + dy;
+                  if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS && (dx !== 0 || dy !== 0)) {
+                    const neighbor = game.grid[ny][nx];
+                    if (neighbor && neighbor.type !== "plasma" && Math.random() < 0.3) {
+                      const baseValue = materials[neighbor.type].baseValue || 1;
+                      collectSand(baseValue * 3 * getCatalystBonus());
+                      game.grid[ny][nx] = new Particle(nx, ny, "sand");
+                    }
+                  }
+                }
+              }
+            }
 
       // Update ember passive generation
       function updatePassiveGeneration() {
@@ -1677,7 +1966,7 @@
         }
         
          if (passiveIncome > 0) {
-           game.sandCollected += passiveIncome * game.collectionMultiplier;
+            collectSand(passiveIncome * game.collectionMultiplier * getCatalystBonus());
          }
        }
 
