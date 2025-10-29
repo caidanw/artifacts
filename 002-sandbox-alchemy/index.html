@@ -1316,12 +1316,10 @@
                 y < ROWS &&
                 !game.grid[y][x]
               ) {
-                if (Math.random() < 0.5) {
-                  // Check if player can afford this material
-                  if (game.sandCollected >= costPerParticle) {
-                    game.sandCollected -= costPerParticle;
-                    game.grid[y][x] = new Particle(x, y, game.currentMaterial);
-                  }
+                // Check if player can afford this material
+                if (game.sandCollected >= costPerParticle) {
+                  game.sandCollected -= costPerParticle;
+                  game.grid[y][x] = new Particle(x, y, game.currentMaterial);
                 }
               }
             }
