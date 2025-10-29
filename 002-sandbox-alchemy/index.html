@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="created" content="2025-10-28" />
+    <title>Sandbox Alchemy</title>
+    <link rel="stylesheet" href="../reset.css" />
+    <link rel="stylesheet" href="../global.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #1a1a2e;
+        color: #fff;
+        overflow: hidden;
+        height: 100vh;
+      }
+
+      #gameContainer {
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        grid-template-rows: auto 1fr;
+        height: 100vh;
+        gap: 20px;
+        padding: 20px;
+      }
+
+      #header {
+        grid-column: 1 / -1;
+        text-align: center;
+        background: rgba(10, 10, 30, 0.95);
+        padding: 15px;
+        border-radius: 8px;
+        border: 2px solid #4a5568;
+      }
+
+      #canvasWrapper {
+        position: relative;
+        background: #0f0f1e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        border: 2px solid #4a5568;
+        min-height: 0;
+      }
+
+      #gameCanvas {
+        border: 3px solid #4a5568;
+        border-radius: 8px;
+        cursor: crosshair;
+        background: #16213e;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        max-width: 100%;
+        max-height: 100%;
+      }
+
+      #controlsPanel {
+        background: rgba(10, 10, 30, 0.95);
+        border-radius: 8px;
+        border: 2px solid #4a5568;
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        gap: 15px;
+        padding: 20px;
+        overflow: hidden;
+      }
+
+      #quickStats {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 8px;
+      }
+
+      #materialControls {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 8px;
+      }
+
+      #gameActions {
+        overflow-y: auto;
+        padding-right: 10px;
+      }
+
+      #gameActions::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      #gameActions::-webkit-scrollbar-track {
+        background: #1a1a2e;
+        border-radius: 4px;
+      }
+
+      #gameActions::-webkit-scrollbar-thumb {
+        background: #4a5568;
+        border-radius: 4px;
+      }
+
+      #bottomControls {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 15px;
+        border-radius: 8px;
+      }
+
+      h1 {
+        font-size: 28px;
+        margin: 0;
+        color: #ffd700;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+      }
+
+      h2 {
+        font-size: 16px;
+        margin: 0 0 10px 0;
+        color: #ffd700;
+      }
+
+      #stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 10px;
+      }
+
+      .stat {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 10px;
+        border-radius: 6px;
+        text-align: center;
+      }
+
+      .stat-label {
+        display: block;
+        color: #a0aec0;
+        font-size: 12px;
+        margin-bottom: 4px;
+      }
+
+      .stat-value {
+        display: block;
+        color: #ffd700;
+        font-weight: bold;
+        font-size: 16px;
+      }
+
+      #currentMaterial {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      #currentMaterial h3 {
+        font-size: 14px;
+        margin-bottom: 5px;
+        opacity: 0.8;
+      }
+
+      #materialName {
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      .section {
+        margin-bottom: 20px;
+      }
+
+      .section h3 {
+        color: #a0aec0;
+        font-size: 13px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        letter-spacing: 1px;
+      }
+
+      .material-btn,
+      .upgrade-btn,
+      .dropper-btn {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 8px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.05);
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+      }
+
+      .material-btn:hover,
+      .upgrade-btn:hover:not(:disabled),
+      .dropper-btn:hover:not(:disabled) {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(102, 126, 234, 0.5);
+      }
+
+      .material-btn.selected {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: #667eea;
+      }
+
+      .material-btn.locked,
+      .upgrade-btn:disabled,
+      .dropper-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .material-btn.locked:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .material-cost,
+      .upgrade-cost {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 3px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+      }
+
+      .upgrade-header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 4px;
+      }
+
+      .upgrade-level {
+        background: rgba(255, 215, 0, 0.3);
+        padding: 2px 6px;
+        border-radius: 10px;
+        font-size: 11px;
+      }
+
+      .upgrade-desc {
+        font-size: 11px;
+        color: #a0aec0;
+        margin-bottom: 4px;
+      }
+
+      .upgrade-btn-content {
+        width: 100%;
+      }
+
+      .action-btn {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 8px;
+        border: none;
+        border-radius: 6px;
+        background: rgba(255, 100, 100, 0.3);
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .action-btn:hover {
+        background: rgba(255, 100, 100, 0.5);
+      }
+
+      .action-btn:active {
+        transform: scale(0.95);
+      }
+
+      .info {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        color: #a0aec0;
+        line-height: 1.5;
+      }
+
+      #brushSize {
+        width: 100%;
+        margin: 10px 0;
+      }
+
+      .brush-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: #a0aec0;
+        margin-bottom: 5px;
+      }
+
+      /* Responsive design */
+      @media (max-width: 1200px) {
+        #gameContainer {
+          grid-template-columns: 1fr 350px;
+          gap: 15px;
+          padding: 15px;
+        }
+
+        #controlsPanel {
+          padding: 15px;
+        }
+      }
+
+      @media (max-width: 900px) {
+        #gameContainer {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto auto auto;
+          gap: 15px;
+        }
+
+        #controlsPanel {
+          grid-row: 3;
+          max-height: 400px;
+        }
+
+        #stats {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      @media (max-width: 600px) {
+        body {
+          overflow-x: hidden;
+        }
+
+        #gameContainer {
+          padding: 10px;
+          gap: 10px;
+        }
+
+        #header h1 {
+          font-size: 24px;
+        }
+
+        #stats {
+          grid-template-columns: 1fr;
+          gap: 8px;
+        }
+
+        .material-btn,
+        .upgrade-btn,
+        .dropper-btn {
+          padding: 10px;
+          font-size: 13px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="gameContainer">
+      <div id="header">
+        <h1>🧪 Sandbox Alchemy</h1>
+        <p style="margin: 0; color: #a0aec0; font-size: 14px">
+          Create, combine, and collect materials in your magical sandbox!
+        </p>
+      </div>
+
+      <div id="canvasWrapper">
+        <canvas id="gameCanvas" width="600" height="500"></canvas>
+      </div>
+
+      <div id="controlsPanel">
+        <div id="quickStats">
+          <h2>📊 Game Stats</h2>
+          <div id="stats">
+            <div class="stat">
+              <span class="stat-label">Sand Collected:</span>
+              <span class="stat-value" id="sandCount">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Sand/sec:</span>
+              <span class="stat-value" id="sandPerSec">0.0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Particles:</span>
+              <span class="stat-value" id="particleCount">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="materialControls">
+          <div id="currentMaterial">
+            <h3>Current Material</h3>
+            <div id="materialName">🟡 Sand (Free)</div>
+          </div>
+
+          <div style="margin-top: 15px">
+            <h3
+              style="
+                margin: 0 0 8px 0;
+                color: #a0aec0;
+                font-size: 13px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+              "
+            >
+              ⚙️ Brush Size
+            </h3>
+            <div class="brush-label">
+              <span>Size:</span>
+              <span id="brushSizeValue">1</span>
+            </div>
+            <input type="range" id="brushSize" min="1" max="5" value="1" />
+          </div>
+        </div>
+
+        <div id="gameActions">
+          <div class="section">
+            <h3>⚡ Upgrades</h3>
+            <div id="upgradesContainer"></div>
+          </div>
+
+          <div class="section">
+            <h3>🏭 Auto-Droppers</h3>
+            <div id="droppersContainer"></div>
+          </div>
+
+          <div class="section">
+            <h3>🎨 Basic Materials</h3>
+            <button class="material-btn selected" data-material="sand">
+              <span>🟡 Sand (Free to place)</span>
+              <span class="material-cost">Free</span>
+            </button>
+            <button
+              class="material-btn locked"
+              data-material="water"
+              data-cost="25"
+            >
+              <span>💧 Water (1 sand/use)</span>
+              <span class="material-cost">25 sand</span>
+            </button>
+            <button
+              class="material-btn locked"
+              data-material="stone"
+              data-cost="50"
+            >
+              <span>⚫ Stone (3 sand/use)</span>
+              <span class="material-cost">50 sand</span>
+            </button>
+          </div>
+
+          <div class="section">
+            <h3>🔥 Advanced Materials</h3>
+            <button
+              class="material-btn locked"
+              data-material="fire"
+              data-cost="100"
+            >
+              <span>🔥 Fire (2 sand/use)</span>
+              <span class="material-cost">100 sand</span>
+            </button>
+            <button
+              class="material-btn locked"
+              data-material="wood"
+              data-cost="75"
+            >
+              <span>🟫 Wood (2 sand/use)</span>
+              <span class="material-cost">75 sand</span>
+            </button>
+            <button
+              class="material-btn locked"
+              data-material="oil"
+              data-cost="150"
+            >
+              <span>🟤 Oil (3 sand/use)</span>
+              <span class="material-cost">150 sand</span>
+            </button>
+            <button
+              class="material-btn locked"
+              data-material="steam"
+              data-cost="125"
+            >
+              <span>💨 Steam (1 sand/use)</span>
+              <span class="material-cost">125 sand</span>
+            </button>
+          </div>
+
+          <div class="info">
+            <strong>💡 Tips:</strong><br />
+            • Sand is free to place<br />
+            • Other materials cost sand per use<br />
+            • Invest wisely for bigger returns!<br />
+            • Red cursor = can't afford<br />
+            <br />
+            <strong>🔬 Material Combos:</strong><br />
+            • Sand + Water = 2x value (golden)<br />
+            • Sand + Oil = 1.5x value<br />
+            • Sand + Fire = Glass (5x value!)<br />
+            • Oil + Fire = Explosion (10x burst!)<br />
+            • Wood + Fire = Ember (passive income)<br />
+            • Stone at bottom = 2x multiplier zone
+          </div>
+        </div>
+
+        <div id="bottomControls">
+          <h3
+            style="
+              margin: 0 0 10px 0;
+              color: #a0aec0;
+              font-size: 13px;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+            "
+          >
+            🗑️ Actions
+          </h3>
+          <button class="action-btn" id="clearBtn">Clear Sandbox</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const canvas = document.getElementById("gameCanvas");
+      const ctx = canvas.getContext("2d");
+
+      const CELL_SIZE = 4;
+      const COLS = Math.floor(canvas.width / CELL_SIZE);
+      const ROWS = Math.floor(canvas.height / CELL_SIZE);
+
+      // Game state
+      const game = {
+        sandCollected: 0,
+        currentMaterial: "sand",
+        brushSize: 1,
+        unlockedMaterials: new Set(["sand"]),
+        grid: Array(ROWS)
+          .fill()
+          .map(() => Array(COLS).fill(null)),
+        mouseDown: false,
+        mouseX: 0,
+        mouseY: 0,
+        clickPower: 1,
+        collectionMultiplier: 1,
+        collectionSpeed: 0.01,
+        droppers: [],
+        sandPerSecTracker: [],
+        lastSandCount: 0,
+      };
+
+      // Upgrades definition
+      const upgrades = {
+        clickPower: {
+          name: "Click Power",
+          description: "Drop more particles per click",
+          level: 0,
+          baseCost: 10,
+          costMultiplier: 1.5,
+          effect: (level) => level + 1,
+          icon: "👆",
+        },
+        collectionMultiplier: {
+          name: "Collection Bonus",
+          description: "Multiply sand collected",
+          level: 0,
+          baseCost: 30,
+          costMultiplier: 2,
+          effect: (level) => Math.pow(2, level),
+          icon: "💰",
+        },
+        collectionSpeed: {
+          name: "Collection Speed",
+          description: "Collect sand faster at bottom",
+          level: 0,
+          baseCost: 50,
+          costMultiplier: 1.8,
+          effect: (level) => 0.01 + level * 0.02,
+          icon: "⚡",
+        },
+      };
+
+      // Dropper types
+      const dropperTypes = {
+        basic: {
+          name: "Basic Dropper",
+          cost: 50,
+          interval: 120, // frames between drops
+          dropAmount: 1,
+          icon: "🟡",
+          color: "#667eea",
+        },
+        advanced: {
+          name: "Advanced Dropper",
+          cost: 250,
+          interval: 60,
+          dropAmount: 2,
+          icon: "🟢",
+          color: "#48bb78",
+        },
+        mega: {
+          name: "Mega Dropper",
+          cost: 1000,
+          interval: 30,
+          dropAmount: 5,
+          icon: "🔵",
+          color: "#9f7aea",
+        },
+      };
+
+      // Material definitions
+      const materials = {
+        sand: {
+          name: "🟡 Sand",
+          color: "#f4d03f",
+          density: 3,
+          fallSpeed: 1,
+          spreadChance: 0.5,
+          flammable: false,
+          liquid: false,
+          placementCost: 0,
+        },
+        water: {
+          name: "💧 Water",
+          color: "#3498db",
+          density: 2,
+          fallSpeed: 2,
+          spreadChance: 0.8,
+          flammable: false,
+          liquid: true,
+          washesParticles: true,
+          placementCost: 1,
+        },
+        stone: {
+          name: "⚫ Stone",
+          color: "#5a5a5a",
+          density: 10,
+          fallSpeed: 0,
+          spreadChance: 0,
+          flammable: false,
+          liquid: false,
+          isPlatform: true,
+          multiplier: 2,
+          placementCost: 3,
+        },
+        fire: {
+          name: "🔥 Fire",
+          color: "#e74c3c",
+          density: 0,
+          fallSpeed: -1,
+          spreadChance: 0.3,
+          flammable: false,
+          liquid: false,
+          lifetime: 60,
+          smelts: true,
+          placementCost: 2,
+        },
+        wood: {
+          name: "🟫 Wood",
+          color: "#8b4513",
+          density: 5,
+          fallSpeed: 0.5,
+          spreadChance: 0,
+          flammable: true,
+          liquid: false,
+          placementCost: 2,
+        },
+        oil: {
+          name: "🟤 Oil",
+          color: "#654321",
+          density: 1,
+          fallSpeed: 1,
+          spreadChance: 0.9,
+          flammable: true,
+          liquid: true,
+          lubricates: true,
+          placementCost: 3,
+        },
+        steam: {
+          name: "💨 Steam",
+          color: "#ecf0f1",
+          density: 0,
+          fallSpeed: -1,
+          spreadChance: 0.7,
+          flammable: false,
+          liquid: false,
+          lifetime: 120,
+          placementCost: 1,
+        },
+        ember: {
+          name: "🔥 Ember",
+          color: "#ff6b35",
+          density: 3,
+          fallSpeed: 0,
+          spreadChance: 0,
+          flammable: false,
+          liquid: false,
+          lifetime: 300,
+          generatesPassiveSand: true,
+          placementCost: 5,
+        },
+        glass: {
+          name: "💎 Glass",
+          color: "#88ccff",
+          density: 4,
+          fallSpeed: 1,
+          spreadChance: 0.3,
+          flammable: false,
+          liquid: false,
+          placementCost: 0,
+        },
+      };
+
+      // Particle class
+      class Particle {
+        constructor(x, y, type) {
+          this.x = x;
+          this.y = y;
+          this.type = type;
+          this.updated = false;
+          this.lifetime = materials[type].lifetime || null;
+          this.age = 0;
+          this.washedBySand = false; // For water interaction bonus
+          this.touchedWater = false; // Sand that touched water = 2x value
+          this.touchedOil = false; // Sand that touched oil = faster fall
+          this.smelted = false; // Fire + sand = glass
+        }
+      }
+
+      // Dropper class
+      class Dropper {
+        constructor(x, type) {
+          this.x = x;
+          this.type = type;
+          this.config = dropperTypes[type];
+          this.frameCounter = 0;
+        }
+
+        update() {
+          this.frameCounter++;
+          if (this.frameCounter >= this.config.interval) {
+            this.frameCounter = 0;
+            this.drop();
+          }
+        }
+
+        drop() {
+          const col = Math.floor(this.x / CELL_SIZE);
+          for (let i = 0; i < this.config.dropAmount; i++) {
+            const targetCol = col + Math.floor(Math.random() * 3) - 1;
+            if (
+              targetCol >= 0 &&
+              targetCol < COLS &&
+              !game.grid[0][targetCol]
+            ) {
+              game.grid[0][targetCol] = new Particle(targetCol, 0, "sand");
+            }
+          }
+        }
+
+        render() {
+          const x = this.x;
+          const y = 10;
+
+          // Draw dropper box
+          ctx.fillStyle = this.config.color;
+          ctx.fillRect(x - 10, y, 20, 15);
+          ctx.strokeStyle = "#ffd700";
+          ctx.lineWidth = 2;
+          ctx.strokeRect(x - 10, y, 20, 15);
+
+          // Draw icon
+          ctx.fillStyle = "#fff";
+          ctx.font = "12px Arial";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(this.config.icon, x, y + 7);
+
+          // Drop animation
+          const progress = this.frameCounter / this.config.interval;
+          if (progress > 0.8) {
+            ctx.fillStyle = "#f4d03f";
+            ctx.globalAlpha = 1 - (progress - 0.8) / 0.2;
+            ctx.beginPath();
+            ctx.arc(x, y + 15 + (progress - 0.8) * 50, 2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+          }
+        }
+      }
+
+      // Mouse handling
+      canvas.addEventListener("mousedown", (e) => {
+        game.mouseDown = true;
+        updateMousePos(e);
+        placeMaterial();
+      });
+
+      canvas.addEventListener("mousemove", (e) => {
+        updateMousePos(e);
+        if (game.mouseDown) {
+          placeMaterial();
+        }
+      });
+
+      canvas.addEventListener("mouseup", () => {
+        game.mouseDown = false;
+      });
+
+      canvas.addEventListener("mouseleave", () => {
+        game.mouseDown = false;
+      });
+
+      function updateMousePos(e) {
+        const rect = canvas.getBoundingClientRect();
+        game.mouseX = Math.floor((e.clientX - rect.left) / CELL_SIZE);
+        game.mouseY = Math.floor((e.clientY - rect.top) / CELL_SIZE);
+      }
+
+      function placeMaterial() {
+        const size = game.brushSize;
+        const halfSize = Math.floor(size / 2);
+        const particlesToPlace = game.clickPower;
+        const material = materials[game.currentMaterial];
+        const costPerParticle = material.placementCost;
+
+        for (let i = 0; i < particlesToPlace; i++) {
+          for (let dy = -halfSize; dy <= halfSize; dy++) {
+            for (let dx = -halfSize; dx <= halfSize; dx++) {
+              const x = game.mouseX + dx;
+              const y = game.mouseY + dy;
+
+              if (
+                x >= 0 &&
+                x < COLS &&
+                y >= 0 &&
+                y < ROWS &&
+                !game.grid[y][x]
+              ) {
+                if (Math.random() < 0.5) {
+                  // Check if player can afford this material
+                  if (game.sandCollected >= costPerParticle) {
+                    game.sandCollected -= costPerParticle;
+                    game.grid[y][x] = new Particle(x, y, game.currentMaterial);
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        updateUI(); // Update UI to show sand being spent
+      }
+
+      // Upgrade system
+      function buyUpgrade(upgradeId) {
+        const upgrade = upgrades[upgradeId];
+        const cost = Math.floor(
+          upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.level),
+        );
+
+        if (game.sandCollected >= cost) {
+          game.sandCollected -= cost;
+          upgrade.level++;
+
+          // Apply upgrade effects
+          if (upgradeId === "clickPower") {
+            game.clickPower = upgrade.effect(upgrade.level);
+          } else if (upgradeId === "collectionMultiplier") {
+            game.collectionMultiplier = upgrade.effect(upgrade.level);
+          } else if (upgradeId === "collectionSpeed") {
+            game.collectionSpeed = upgrade.effect(upgrade.level);
+          }
+
+          renderUpgrades();
+          updateUI();
+        }
+      }
+
+      function renderUpgrades() {
+        const container = document.getElementById("upgradesContainer");
+        container.innerHTML = "";
+
+        Object.entries(upgrades).forEach(([id, upgrade]) => {
+          const cost = Math.floor(
+            upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.level),
+          );
+          const canAfford = game.sandCollected >= cost;
+
+          const btn = document.createElement("button");
+          btn.className = "upgrade-btn";
+          btn.disabled = !canAfford;
+          btn.innerHTML = `
+                    <div class="upgrade-btn-content">
+                        <div class="upgrade-header">
+                            <span>${upgrade.icon} ${upgrade.name}</span>
+                            <span class="upgrade-level">Lv ${upgrade.level}</span>
+                        </div>
+                        <div class="upgrade-desc">${upgrade.description}</div>
+                        <div class="upgrade-cost">Cost: ${cost} sand</div>
+                    </div>
+                `;
+          btn.onclick = () => buyUpgrade(id);
+          container.appendChild(btn);
+        });
+      }
+
+      // Dropper system
+      function buyDropper(type) {
+        const config = dropperTypes[type];
+        if (game.sandCollected >= config.cost) {
+          game.sandCollected -= config.cost;
+
+          // Place dropper at random position
+          const x = 50 + Math.random() * (canvas.width - 100);
+          game.droppers.push(new Dropper(x, type));
+
+          renderDroppers();
+          updateUI();
+        }
+      }
+
+      function renderDroppers() {
+        const container = document.getElementById("droppersContainer");
+        container.innerHTML = "";
+
+        Object.entries(dropperTypes).forEach(([id, config]) => {
+          const count = game.droppers.filter((d) => d.type === id).length;
+          const canAfford = game.sandCollected >= config.cost;
+
+          const btn = document.createElement("button");
+          btn.className = "dropper-btn";
+          btn.disabled = !canAfford;
+          btn.innerHTML = `
+                    <span>${config.icon} ${config.name} (${count})</span>
+                    <span class="material-cost">${config.cost} sand</span>
+                `;
+          btn.onclick = () => buyDropper(id);
+          container.appendChild(btn);
+        });
+      }
+
+      // Material buttons
+      document.querySelectorAll(".material-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const material = btn.dataset.material;
+          const cost = parseInt(btn.dataset.cost) || 0;
+
+          if (game.unlockedMaterials.has(material)) {
+            selectMaterial(material);
+          } else if (game.sandCollected >= cost) {
+            // Unlock material
+            game.sandCollected -= cost;
+            game.unlockedMaterials.add(material);
+            btn.classList.remove("locked");
+            selectMaterial(material);
+            updateUI();
+          }
+        });
+      });
+
+      function selectMaterial(material) {
+        game.currentMaterial = material;
+        document.querySelectorAll(".material-btn").forEach((btn) => {
+          btn.classList.remove("selected");
+        });
+        const btn = document.querySelector(`[data-material="${material}"]`);
+        if (btn) {
+          btn.classList.add("selected");
+          const mat = materials[material];
+          const costText =
+            mat.placementCost > 0
+              ? ` (${mat.placementCost} sand/use)`
+              : " (Free)";
+          document.getElementById("materialName").textContent =
+            mat.name + costText;
+        }
+      }
+
+      // Brush size
+      document.getElementById("brushSize").addEventListener("input", (e) => {
+        game.brushSize = parseInt(e.target.value);
+        document.getElementById("brushSizeValue").textContent = game.brushSize;
+      });
+
+      // Clear button
+      document.getElementById("clearBtn").addEventListener("click", () => {
+        game.grid = Array(ROWS)
+          .fill()
+          .map(() => Array(COLS).fill(null));
+      });
+
+      // Physics simulation
+      function updatePhysics() {
+        // Reset updated flags
+        for (let y = 0; y < ROWS; y++) {
+          for (let x = 0; x < COLS; x++) {
+            if (game.grid[y][x]) {
+              game.grid[y][x].updated = false;
+            }
+          }
+        }
+
+        // Process from bottom to top
+        for (let y = ROWS - 1; y >= 0; y--) {
+          for (let x = 0; x < COLS; x++) {
+            const particle = game.grid[y][x];
+            if (!particle || particle.updated) continue;
+
+            const mat = materials[particle.type];
+            particle.updated = true;
+            particle.age++;
+
+            // Handle lifetime
+            if (particle.lifetime && particle.age >= particle.lifetime) {
+              game.grid[y][x] = null;
+              continue;
+            }
+
+            // Movement based on density and type
+            if (mat.fallSpeed > 0) {
+              // Check for material interactions before moving
+              checkMaterialInteractions(particle, x, y);
+
+              // Try to fall down first
+              if (tryMove(particle, x, y, 0, 1)) continue;
+
+              // If can't fall, try to spread
+              if (mat.liquid && Math.random() < mat.spreadChance) {
+                // Liquids spread horizontally when they can't fall
+                const dir = Math.random() < 0.5 ? -1 : 1;
+                if (!tryMove(particle, x, y, dir, 0)) {
+                  tryMove(particle, x, y, -dir, 0);
+                }
+              } else if (
+                mat.spreadChance > 0 &&
+                Math.random() < mat.spreadChance
+              ) {
+                // Granular materials (sand) try to fall diagonally
+                const dir = Math.random() < 0.5 ? -1 : 1;
+                if (!tryMove(particle, x, y, dir, 1)) {
+                  tryMove(particle, x, y, -dir, 1);
+                }
+              }
+            }
+
+            // Collect materials from the very bottom row (collection zone)
+            if (y === ROWS - 1 && Math.random() < game.collectionSpeed) {
+              let collectionValue = game.collectionMultiplier;
+
+              // Calculate bonuses based on material type and interactions
+              if (particle.type === "sand") {
+                if (particle.touchedWater) {
+                  collectionValue *= 2; // Washed sand = 2x
+                }
+                if (particle.touchedOil) {
+                  collectionValue *= 1.5; // Lubricated sand = 1.5x
+                }
+
+                // Check if there's a stone platform below (would be off-screen but we can check adjacent)
+                let onStonePlatform = false;
+                for (let checkX = x - 1; checkX <= x + 1; checkX++) {
+                  if (checkX >= 0 && checkX < COLS) {
+                    // Check if stone is nearby in bottom row
+                    if (
+                      game.grid[y][checkX] &&
+                      game.grid[y][checkX].type === "stone"
+                    ) {
+                      onStonePlatform = true;
+                      break;
+                    }
+                  }
+                }
+
+                if (onStonePlatform) {
+                  collectionValue *= 2; // Stone platform multiplier
+                }
+
+                game.sandCollected += collectionValue;
+                game.grid[y][x] = null;
+              } else if (particle.type === "glass") {
+                // Glass is worth 5x sand
+                game.sandCollected += collectionValue * 5;
+                game.grid[y][x] = null;
+              } else if (particle.type === "stone") {
+                // Stone stays at bottom as permanent platform
+                // Don't remove it
+              }
+            }
+
+            // Ember passive generation (anywhere on screen)
+            if (particle.type === "ember" && Math.random() < 0.01) {
+              game.sandCollected += game.collectionMultiplier * 0.1;
+            } else if (mat.fallSpeed < 0) {
+              // Rising particles (fire, steam)
+              if (tryMove(particle, x, y, 0, -1)) continue;
+
+              if (Math.random() < mat.spreadChance) {
+                const dir = Math.random() < 0.5 ? -1 : 1;
+                tryMove(particle, x, y, dir, -1) ||
+                  tryMove(particle, x, y, dir, 0);
+              }
+            }
+
+            // Fire interactions
+            if (particle.type === "fire") {
+              // Fire spreads to adjacent flammable materials
+              for (let dy = -1; dy <= 1; dy++) {
+                for (let dx = -1; dx <= 1; dx++) {
+                  const nx = x + dx;
+                  const ny = y + dy;
+                  if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS) {
+                    const neighbor = game.grid[ny][nx];
+                    if (
+                      neighbor &&
+                      materials[neighbor.type].flammable &&
+                      Math.random() < 0.1
+                    ) {
+                      game.grid[ny][nx] = new Particle(nx, ny, "fire");
+                    }
+                    // Water extinguishes fire
+                    if (neighbor && neighbor.type === "water") {
+                      game.grid[y][x] = null;
+                      game.grid[ny][nx] = new Particle(nx, ny, "steam");
+                    }
+                  }
+                }
+              }
+            }
+
+            // Water + Fire = Steam
+            if (particle.type === "water") {
+              for (let dy = -1; dy <= 1; dy++) {
+                for (let dx = -1; dx <= 1; dx++) {
+                  const nx = x + dx;
+                  const ny = y + dy;
+                  if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS) {
+                    const neighbor = game.grid[ny][nx];
+                    if (
+                      neighbor &&
+                      neighbor.type === "fire" &&
+                      Math.random() < 0.3
+                    ) {
+                      game.grid[y][x] = new Particle(x, y, "steam");
+                      game.grid[ny][nx] = null;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // Check for material interactions
+      function checkMaterialInteractions(particle, x, y) {
+        for (let dy = -1; dy <= 1; dy++) {
+          for (let dx = -1; dx <= 1; dx++) {
+            if (dx === 0 && dy === 0) continue;
+
+            const nx = x + dx;
+            const ny = y + dy;
+            if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) continue;
+
+            const neighbor = game.grid[ny][nx];
+            if (!neighbor) continue;
+
+            const neighborMat = materials[neighbor.type];
+
+            // Sand + Water = Washed sand (2x value)
+            if (particle.type === "sand" && neighbor.type === "water") {
+              particle.touchedWater = true;
+            }
+
+            // Sand + Oil = Lubricated (falls faster, bonus)
+            if (particle.type === "sand" && neighbor.type === "oil") {
+              particle.touchedOil = true;
+            }
+
+            // Sand + Fire = Glass (5x value)
+            if (
+              particle.type === "sand" &&
+              neighbor.type === "fire" &&
+              Math.random() < 0.1
+            ) {
+              game.grid[y][x] = new Particle(x, y, "glass");
+              game.sandCollected += 2; // Instant bonus for smelting
+            }
+
+            // Oil + Fire = EXPLOSION! (Big sand burst)
+            if (
+              particle.type === "oil" &&
+              neighbor.type === "fire" &&
+              Math.random() < 0.3
+            ) {
+              // Create explosion effect - remove oil and give massive bonus
+              game.grid[y][x] = null;
+              game.sandCollected += 10 * game.collectionMultiplier;
+
+              // Create fire particles around explosion
+              for (let ey = -2; ey <= 2; ey++) {
+                for (let ex = -2; ex <= 2; ex++) {
+                  const explosionX = x + ex;
+                  const explosionY = y + ey;
+                  if (
+                    explosionX >= 0 &&
+                    explosionX < COLS &&
+                    explosionY >= 0 &&
+                    explosionY < ROWS
+                  ) {
+                    if (
+                      !game.grid[explosionY][explosionX] &&
+                      Math.random() < 0.4
+                    ) {
+                      game.grid[explosionY][explosionX] = new Particle(
+                        explosionX,
+                        explosionY,
+                        "fire",
+                      );
+                    }
+                  }
+                }
+              }
+            }
+
+            // Wood + Fire = Ember (passive sand generator)
+            if (
+              particle.type === "wood" &&
+              neighbor.type === "fire" &&
+              Math.random() < 0.05
+            ) {
+              game.grid[y][x] = new Particle(x, y, "ember");
+            }
+          }
+        }
+      }
+
+      function tryMove(particle, x, y, dx, dy) {
+        const nx = x + dx;
+        const ny = y + dy;
+
+        if (nx < 0 || nx >= COLS || ny < 0 || ny >= ROWS) return false;
+
+        const target = game.grid[ny][nx];
+
+        if (!target) {
+          // Empty space - move there
+          game.grid[ny][nx] = particle;
+          game.grid[y][x] = null;
+          particle.x = nx;
+          particle.y = ny;
+          return true;
+        } else {
+          // Check density - denser particles can displace lighter ones
+          const particleMat = materials[particle.type];
+          const targetMat = materials[target.type];
+
+          if (particleMat.density > targetMat.density) {
+            // Swap
+            game.grid[ny][nx] = particle;
+            game.grid[y][x] = target;
+            particle.x = nx;
+            particle.y = ny;
+            target.x = x;
+            target.y = y;
+            return true;
+          }
+        }
+
+        return false;
+      }
+
+      // Update droppers
+      function updateDroppers() {
+        game.droppers.forEach((dropper) => dropper.update());
+      }
+
+      // Render
+      function render() {
+        ctx.fillStyle = "#16213e";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw particles
+        for (let y = 0; y < ROWS; y++) {
+          for (let x = 0; x < COLS; x++) {
+            const particle = game.grid[y][x];
+            if (particle) {
+              const mat = materials[particle.type];
+              ctx.fillStyle = mat.color;
+
+              // Visual variations based on interactions
+              if (particle.type === "sand") {
+                if (particle.touchedWater) {
+                  ctx.fillStyle = "#d4af37"; // Golden sand (washed)
+                } else if (particle.touchedOil) {
+                  ctx.fillStyle = "#aa8844"; // Darker oily sand
+                }
+              }
+
+              // Add some variation for fire
+              if (particle.type === "fire") {
+                const colors = ["#e74c3c", "#f39c12", "#f1c40f"];
+                ctx.fillStyle =
+                  colors[Math.floor(Math.random() * colors.length)];
+              }
+
+              // Ember glow effect
+              if (particle.type === "ember") {
+                const glowColors = ["#ff6b35", "#f7931e", "#ff4500"];
+                ctx.fillStyle =
+                  glowColors[Math.floor(Math.random() * glowColors.length)];
+              }
+
+              ctx.fillRect(x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE);
+
+              // Add sparkle effect to glass
+              if (particle.type === "glass" && Math.random() < 0.3) {
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(x * CELL_SIZE + 1, y * CELL_SIZE + 1, 1, 1);
+              }
+            }
+          }
+        }
+
+        // Draw droppers
+        game.droppers.forEach((dropper) => dropper.render());
+
+        // Draw brush preview
+        if (
+          game.mouseX >= 0 &&
+          game.mouseX < COLS &&
+          game.mouseY >= 0 &&
+          game.mouseY < ROWS
+        ) {
+          const material = materials[game.currentMaterial];
+          const canAfford = game.sandCollected >= material.placementCost;
+
+          ctx.strokeStyle = canAfford
+            ? "rgba(255, 255, 255, 0.5)"
+            : "rgba(255, 100, 100, 0.8)";
+          ctx.lineWidth = canAfford ? 1 : 2;
+          const size = game.brushSize;
+          const halfSize = Math.floor(size / 2);
+          ctx.strokeRect(
+            (game.mouseX - halfSize) * CELL_SIZE,
+            (game.mouseY - halfSize) * CELL_SIZE,
+            size * CELL_SIZE,
+            size * CELL_SIZE,
+          );
+        }
+      }
+
+      // Track sand per second
+      function updateSandPerSec() {
+        const currentSand = game.sandCollected;
+        game.sandPerSecTracker.push(currentSand - game.lastSandCount);
+        game.lastSandCount = currentSand;
+
+        // Keep only last 10 seconds of data
+        if (game.sandPerSecTracker.length > 60) {
+          game.sandPerSecTracker.shift();
+        }
+
+        // Calculate average
+        const total = game.sandPerSecTracker.reduce((a, b) => a + b, 0);
+        const average = total / (game.sandPerSecTracker.length / 60);
+
+        document.getElementById("sandPerSec").textContent = average.toFixed(1);
+      }
+
+      // Update UI
+      function updateUI() {
+        document.getElementById("sandCount").textContent = Math.floor(
+          game.sandCollected,
+        );
+
+        let particleCount = 0;
+        for (let y = 0; y < ROWS; y++) {
+          for (let x = 0; x < COLS; x++) {
+            if (game.grid[y][x]) particleCount++;
+          }
+        }
+        document.getElementById("particleCount").textContent = particleCount;
+      }
+
+      // Game loop
+      let frameCount = 0;
+      function gameLoop() {
+        frameCount++;
+
+        // Update physics every frame
+        updatePhysics();
+
+        // Update droppers
+        updateDroppers();
+
+        // Render
+        render();
+
+        // Update UI less frequently
+        if (frameCount % 10 === 0) {
+          updateUI();
+        }
+
+        // Update sand per second
+        if (frameCount % 60 === 0) {
+          updateSandPerSec();
+          renderUpgrades();
+          renderDroppers();
+        }
+
+        requestAnimationFrame(gameLoop);
+      }
+
+      // Start game
+      renderUpgrades();
+      renderDroppers();
+      updateUI();
+      gameLoop();
+    </script>
+  </body>
+</html>
