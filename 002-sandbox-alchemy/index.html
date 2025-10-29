@@ -299,62 +299,71 @@
         margin-bottom: 5px;
       }
 
-      /* Responsive design */
-      @media (max-width: 1200px) {
-        #gameContainer {
-          grid-template-columns: 1fr 350px;
-          gap: 15px;
-          padding: 15px;
-        }
+       /* Responsive design */
+       @media (max-width: 1200px) {
+         #gameContainer {
+           grid-template-columns: 1fr 350px;
+           gap: 15px;
+           padding: 15px;
+         }
 
-        #controlsPanel {
-          padding: 15px;
-        }
-      }
+         #controlsPanel {
+           padding: 15px;
+         }
+       }
 
-      @media (max-width: 900px) {
-        #gameContainer {
-          grid-template-columns: 1fr;
-          grid-template-rows: auto auto auto;
-          gap: 15px;
-        }
+       @media (max-width: 900px) {
+         #gameContainer {
+           grid-template-columns: 1fr;
+           grid-template-rows: auto auto auto;
+           gap: 15px;
+         }
 
-        #controlsPanel {
-          grid-row: 3;
-          max-height: 400px;
-        }
+         #controlsPanel {
+           grid-row: 3;
+           max-height: 400px;
+         }
 
-        #stats {
-          grid-template-columns: repeat(3, 1fr);
-        }
-      }
+         #stats {
+           grid-template-columns: repeat(3, 1fr);
+         }
+       }
 
-      @media (max-width: 600px) {
-        body {
-          overflow-x: hidden;
-        }
+       @media (max-width: 600px) {
+         body {
+           overflow-x: hidden;
+         }
 
-        #gameContainer {
-          padding: 10px;
-          gap: 10px;
-        }
+         #gameContainer {
+           padding: 10px;
+           gap: 10px;
+         }
 
-        #header h1 {
-          font-size: 24px;
-        }
+         #header h1 {
+           font-size: 24px;
+         }
 
-        #stats {
-          grid-template-columns: 1fr;
-          gap: 8px;
-        }
+         #stats {
+           grid-template-columns: 1fr;
+           gap: 8px;
+         }
 
-        .material-btn,
-        .upgrade-btn,
-        .dropper-btn {
-          padding: 10px;
-          font-size: 13px;
-        }
-      }
+         .material-btn,
+         .upgrade-btn,
+         .dropper-btn {
+           padding: 10px;
+           font-size: 13px;
+         }
+       }
+
+       /* Discovery notification animation */
+       @keyframes fadeInOut {
+         0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+         15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+         20% { transform: translate(-50%, -50%) scale(1); }
+         80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+         100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+       }
     </style>
   </head>
   <body>
@@ -371,23 +380,27 @@
       </div>
 
       <div id="controlsPanel">
-        <div id="quickStats">
-          <h2>📊 Game Stats</h2>
-          <div id="stats">
-            <div class="stat">
-              <span class="stat-label">Sand Collected:</span>
-              <span class="stat-value" id="sandCount">0</span>
-            </div>
-            <div class="stat">
-              <span class="stat-label">Sand/sec:</span>
-              <span class="stat-value" id="sandPerSec">0.0</span>
-            </div>
-            <div class="stat">
-              <span class="stat-label">Particles:</span>
-              <span class="stat-value" id="particleCount">0</span>
-            </div>
-          </div>
-        </div>
+         <div id="quickStats">
+           <h2>📊 Game Stats</h2>
+           <div id="stats">
+             <div class="stat">
+               <span class="stat-label">Sand Collected:</span>
+               <span class="stat-value" id="sandCount">0</span>
+             </div>
+             <div class="stat">
+               <span class="stat-label">Sand/sec:</span>
+               <span class="stat-value" id="sandPerSec">0.0</span>
+             </div>
+             <div class="stat">
+               <span class="stat-label">Auto-Clickers:</span>
+               <span class="stat-value" id="autoClickerCount">0</span>
+             </div>
+             <div class="stat">
+               <span class="stat-label">Particles:</span>
+               <span class="stat-value" id="particleCount">0</span>
+             </div>
+           </div>
+         </div>
 
         <div id="materialControls">
           <div id="currentMaterial">
@@ -435,18 +448,16 @@
             <button
               class="material-btn locked"
               data-material="water"
-              data-cost="25"
             >
-              <span>💧 Water (1 sand/use)</span>
-              <span class="material-cost">25 sand</span>
+              <span>💧 Water (2 sand/use)</span>
+              <span class="material-cost">50 sand</span>
             </button>
             <button
               class="material-btn locked"
               data-material="stone"
-              data-cost="50"
             >
-              <span>⚫ Stone (3 sand/use)</span>
-              <span class="material-cost">50 sand</span>
+              <span>⚫ Stone (5 sand/use)</span>
+              <span class="material-cost">100 sand</span>
             </button>
           </div>
 
@@ -455,51 +466,47 @@
             <button
               class="material-btn locked"
               data-material="fire"
-              data-cost="100"
             >
-              <span>🔥 Fire (2 sand/use)</span>
-              <span class="material-cost">100 sand</span>
+              <span>🔥 Fire (3 sand/use)</span>
+              <span class="material-cost">200 sand</span>
             </button>
             <button
               class="material-btn locked"
               data-material="wood"
-              data-cost="75"
             >
-              <span>🟫 Wood (2 sand/use)</span>
-              <span class="material-cost">75 sand</span>
-            </button>
-            <button
-              class="material-btn locked"
-              data-material="oil"
-              data-cost="150"
-            >
-              <span>🟤 Oil (3 sand/use)</span>
+              <span>🟫 Wood (4 sand/use)</span>
               <span class="material-cost">150 sand</span>
             </button>
             <button
               class="material-btn locked"
-              data-material="steam"
-              data-cost="125"
+              data-material="oil"
             >
-              <span>💨 Steam (1 sand/use)</span>
-              <span class="material-cost">125 sand</span>
+              <span>🟤 Oil (6 sand/use)</span>
+              <span class="material-cost">300 sand</span>
+            </button>
+            <button
+              class="material-btn locked"
+              data-material="steam"
+            >
+              <span>💨 Steam (2 sand/use)</span>
+              <span class="material-cost">250 sand</span>
             </button>
           </div>
 
           <div class="info">
-            <strong>💡 Tips:</strong><br />
-            • Sand is free to place<br />
-            • Other materials cost sand per use<br />
-            • Invest wisely for bigger returns!<br />
-            • Red cursor = can't afford<br />
+            <strong>💡 Idle Game Tips:</strong><br />
+            • Buy Auto-Clickers for passive sand generation<br />
+            • Upgrades compound for exponential growth<br />
+            • Experiment with material combinations!<br />
+            • Ember particles provide passive income<br />
             <br />
-            <strong>🔬 Material Combos:</strong><br />
-            • Sand + Water = 2x value (golden)<br />
-            • Sand + Oil = 1.5x value<br />
-            • Sand + Fire = Glass (5x value!)<br />
-            • Oil + Fire = Explosion (10x burst!)<br />
+            <strong>🔬 Enhanced Material Reactions:</strong><br />
+            • Sand + Water = Mud (3x value)<br />
+            • Sand + Fire = Glass (10x value!)<br />
+            • Oil + Fire = Explosion (25x burst!)<br />
             • Wood + Fire = Ember (passive income)<br />
-            • Stone at bottom = 2x multiplier zone
+            • Stone + Fire = Obsidian (5x platform)<br />
+            • Discover more combinations for bonuses!
           </div>
         </div>
 
@@ -542,20 +549,47 @@
         mouseY: 0,
         clickPower: 1,
         collectionMultiplier: 1,
-        collectionSpeed: 0.01,
+        collectionSpeed: 0.005, // Slower base collection
         droppers: [],
         sandPerSecTracker: [],
         lastSandCount: 0,
+        // New idle game mechanics
+        autoClickers: 0,
+        autoClickerPower: 1,
+        autoClickerSpeed: 180, // frames between auto clicks (3 seconds)
+        autoClickerTimer: 0,
+        research: {
+          autoCollection: 0,
+          materialEfficiency: 0,
+          reactionSpeed: 0,
+          automation: 0
+        },
+        reactions: new Map(), // Track active reactions
+        materialCombos: new Map(), // Track discovered combinations
+        prestige: {
+          level: 0,
+          points: 0,
+          multiplier: 1
+        }
       };
 
-      // Upgrades definition
+      // Upgrades definition - Rebalanced for idle game
       const upgrades = {
+        autoClicker: {
+          name: "Auto Clicker",
+          description: "Automatically places sand particles",
+          level: 0,
+          baseCost: 100,
+          costMultiplier: 2.5,
+          effect: (level) => level,
+          icon: "🤖",
+        },
         clickPower: {
           name: "Click Power",
           description: "Drop more particles per click",
           level: 0,
-          baseCost: 10,
-          costMultiplier: 1.5,
+          baseCost: 50,
+          costMultiplier: 2,
           effect: (level) => level + 1,
           icon: "👆",
         },
@@ -563,51 +597,77 @@
           name: "Collection Bonus",
           description: "Multiply sand collected",
           level: 0,
-          baseCost: 30,
-          costMultiplier: 2,
-          effect: (level) => Math.pow(2, level),
+          baseCost: 150,
+          costMultiplier: 3,
+          effect: (level) => Math.pow(1.5, level),
           icon: "💰",
         },
         collectionSpeed: {
           name: "Collection Speed",
           description: "Collect sand faster at bottom",
           level: 0,
-          baseCost: 50,
-          costMultiplier: 1.8,
-          effect: (level) => 0.01 + level * 0.02,
+          baseCost: 200,
+          costMultiplier: 2.2,
+          effect: (level) => 0.005 + level * 0.005,
           icon: "⚡",
+        },
+        reactionEfficiency: {
+          name: "Reaction Catalyst",
+          description: "Increase material reaction rates",
+          level: 0,
+          baseCost: 500,
+          costMultiplier: 3,
+          effect: (level) => 1 + level * 0.5,
+          icon: "🧪",
+        },
+        automationSpeed: {
+          name: "Automation Speed",
+          description: "Auto-clickers and droppers work faster",
+          level: 0,
+          baseCost: 750,
+          costMultiplier: 2.5,
+          effect: (level) => Math.max(0.5, 1 - level * 0.1),
+          icon: "⚙️",
         },
       };
 
-      // Dropper types
+      // Dropper types - Rebalanced for idle progression
       const dropperTypes = {
         basic: {
           name: "Basic Dropper",
-          cost: 50,
-          interval: 120, // frames between drops
+          cost: 300,
+          interval: 300, // 5 seconds between drops
           dropAmount: 1,
           icon: "🟡",
           color: "#667eea",
         },
         advanced: {
           name: "Advanced Dropper",
-          cost: 250,
-          interval: 60,
+          cost: 1500,
+          interval: 240, // 4 seconds
           dropAmount: 2,
           icon: "🟢",
           color: "#48bb78",
         },
         mega: {
           name: "Mega Dropper",
-          cost: 1000,
-          interval: 30,
-          dropAmount: 5,
+          cost: 7500,
+          interval: 180, // 3 seconds
+          dropAmount: 4,
           icon: "🔵",
           color: "#9f7aea",
         },
+        quantum: {
+          name: "Quantum Dropper",
+          cost: 50000,
+          interval: 120, // 2 seconds
+          dropAmount: 8,
+          icon: "⚡",
+          color: "#ffd700",
+        },
       };
 
-      // Material definitions
+      // Material definitions - Enhanced for meaningful interactions
       const materials = {
         sand: {
           name: "🟡 Sand",
@@ -618,6 +678,8 @@
           flammable: false,
           liquid: false,
           placementCost: 0,
+          unlockCost: 0,
+          baseValue: 1,
         },
         water: {
           name: "💧 Water",
@@ -628,7 +690,10 @@
           flammable: false,
           liquid: true,
           washesParticles: true,
-          placementCost: 1,
+          placementCost: 2,
+          unlockCost: 50,
+          baseValue: 0,
+          reactions: ["sand", "fire", "oil"],
         },
         stone: {
           name: "⚫ Stone",
@@ -640,19 +705,24 @@
           liquid: false,
           isPlatform: true,
           multiplier: 2,
-          placementCost: 3,
+          placementCost: 5,
+          unlockCost: 100,
+          baseValue: 0,
         },
         fire: {
           name: "🔥 Fire",
           color: "#e74c3c",
           density: 0,
           fallSpeed: -1,
-          spreadChance: 0.3,
+          spreadChance: 0.2,
           flammable: false,
           liquid: false,
-          lifetime: 60,
+          lifetime: 180, // Longer lifetime for more reactions
           smelts: true,
-          placementCost: 2,
+          placementCost: 3,
+          unlockCost: 200,
+          baseValue: 0,
+          reactions: ["sand", "water", "wood", "oil"],
         },
         wood: {
           name: "🟫 Wood",
@@ -662,7 +732,10 @@
           spreadChance: 0,
           flammable: true,
           liquid: false,
-          placementCost: 2,
+          placementCost: 4,
+          unlockCost: 150,
+          baseValue: 2,
+          reactions: ["fire"],
         },
         oil: {
           name: "🟤 Oil",
@@ -673,7 +746,10 @@
           flammable: true,
           liquid: true,
           lubricates: true,
-          placementCost: 3,
+          placementCost: 6,
+          unlockCost: 300,
+          baseValue: 3,
+          reactions: ["fire", "water", "sand"],
         },
         steam: {
           name: "💨 Steam",
@@ -683,9 +759,12 @@
           spreadChance: 0.7,
           flammable: false,
           liquid: false,
-          lifetime: 120,
-          placementCost: 1,
+          lifetime: 240,
+          placementCost: 2,
+          unlockCost: 250,
+          baseValue: 1,
         },
+        // New advanced materials
         ember: {
           name: "🔥 Ember",
           color: "#ff6b35",
@@ -694,9 +773,12 @@
           spreadChance: 0,
           flammable: false,
           liquid: false,
-          lifetime: 300,
+          lifetime: 600, // 10 seconds
           generatesPassiveSand: true,
-          placementCost: 5,
+          placementCost: 0, // Cannot be placed directly
+          unlockCost: 0,
+          baseValue: 0,
+          passiveGeneration: 0.1, // Sand per second
         },
         glass: {
           name: "💎 Glass",
@@ -706,9 +788,193 @@
           spreadChance: 0.3,
           flammable: false,
           liquid: false,
+          placementCost: 0, // Cannot be placed directly
+          unlockCost: 0,
+          baseValue: 10, // High value
+        },
+        mud: {
+          name: "🟤 Mud",
+          color: "#8b6914",
+          density: 4,
+          fallSpeed: 0.3,
+          spreadChance: 0.2,
+          flammable: false,
+          liquid: false,
           placementCost: 0,
+          unlockCost: 0,
+          baseValue: 3,
+        },
+        obsidian: {
+          name: "⚫ Obsidian",
+          color: "#2c3e50",
+          density: 12,
+          fallSpeed: 0,
+          spreadChance: 0,
+          flammable: false,
+          liquid: false,
+          isPlatform: true,
+          multiplier: 5, // Higher multiplier than stone
+          placementCost: 0,
+          unlockCost: 0,
+          baseValue: 20,
         },
       };
+
+      // Material Reaction System - Enhanced meaningful interactions
+      const materialReactions = {
+        // Basic reactions
+        "sand+water": {
+          result: "mud",
+          chance: 0.3,
+          description: "Sand + Water = Mud (3x value)",
+          discoveryBonus: 50,
+        },
+        "sand+fire": {
+          result: "glass", 
+          chance: 0.2,
+          description: "Sand + Fire = Glass (10x value!)",
+          discoveryBonus: 100,
+        },
+        "water+fire": {
+          result: "steam",
+          chance: 0.5,
+          description: "Water + Fire = Steam",
+          discoveryBonus: 25,
+        },
+        "wood+fire": {
+          result: "ember",
+          chance: 0.3,
+          description: "Wood + Fire = Ember (passive income)",
+          discoveryBonus: 75,
+        },
+        "oil+fire": {
+          result: "explosion",
+          chance: 0.4,
+          description: "Oil + Fire = EXPLOSION! (Massive sand burst)",
+          discoveryBonus: 200,
+        },
+        // Advanced reactions
+        "sand+oil": {
+          result: "enhanced_sand",
+          chance: 0.4,
+          description: "Sand + Oil = Enhanced Sand (2x value)",
+          discoveryBonus: 30,
+        },
+        "stone+fire": {
+          result: "obsidian",
+          chance: 0.1,
+          description: "Stone + Fire = Obsidian (5x multiplier platform)",
+          discoveryBonus: 150,
+        },
+        "glass+water": {
+          result: "crystal",
+          chance: 0.05,
+          description: "Glass + Water = Crystal (20x value)",
+          discoveryBonus: 500,
+        },
+      };
+
+      // Combo discovery tracking
+      const comboDiscoveries = new Map();
+
+       // Function to check and trigger reactions
+       function triggerReaction(material1, material2, x, y) {
+         const key1 = `${material1}+${material2}`;
+         const key2 = `${material2}+${material1}`;
+         
+         const reaction = materialReactions[key1] || materialReactions[key2];
+         if (!reaction) return false;
+
+         // Apply reaction efficiency upgrade
+         const reactionChance = reaction.chance * (upgrades.reactionEfficiency.level > 0 ? 
+           upgrades.reactionEfficiency.effect(upgrades.reactionEfficiency.level) : 1);
+
+         if (Math.random() < Math.min(reactionChance, 0.8)) { // Cap at 80% chance
+           // Trigger reaction
+           if (reaction.result === "explosion") {
+             // Special explosion handling
+             game.sandCollected += 25 * game.collectionMultiplier;
+             createExplosion(x, y);
+           } else if (reaction.result === "enhanced_sand") {
+             // Enhanced sand - create regular sand but mark it
+             const particle = new Particle(x, y, "sand");
+             particle.enhanced = true;
+             particle.valueMultiplier = 2;
+             game.grid[y][x] = particle;
+           } else if (materials[reaction.result]) {
+             // Create new material
+             game.grid[y][x] = new Particle(x, y, reaction.result);
+           }
+
+           // Discovery bonus (first time only)
+           const comboKey = key1 in materialReactions ? key1 : key2;
+           if (!comboDiscoveries.has(comboKey)) {
+             comboDiscoveries.set(comboKey, true);
+             game.sandCollected += reaction.discoveryBonus;
+             showDiscoveryNotification(reaction.description, reaction.discoveryBonus);
+           }
+
+           return true;
+         }
+         return false;
+       }
+
+      function createExplosion(x, y) {
+        // Create fire particles in explosion radius
+        for (let dy = -3; dy <= 3; dy++) {
+          for (let dx = -3; dx <= 3; dx++) {
+            const distance = Math.sqrt(dx*dx + dy*dy);
+            if (distance <= 3 && Math.random() < 0.5) {
+              const explosionX = x + dx;
+              const explosionY = y + dy;
+              if (explosionX >= 0 && explosionX < COLS && 
+                  explosionY >= 0 && explosionY < ROWS &&
+                  !game.grid[explosionY][explosionX]) {
+                game.grid[explosionY][explosionX] = new Particle(explosionX, explosionY, "fire");
+              }
+            }
+          }
+        }
+      }
+
+       function showDiscoveryNotification(description, bonus) {
+         // Create a visual notification for discoveries
+         console.log(`🎉 DISCOVERY: ${description} (+${bonus} sand bonus!)`);
+         
+         // Create a temporary notification overlay
+         const notification = document.createElement('div');
+         notification.style.cssText = `
+           position: fixed;
+           top: 50%;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+           color: white;
+           padding: 20px;
+           border-radius: 10px;
+           font-size: 18px;
+           font-weight: bold;
+           z-index: 1000;
+           box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+           text-align: center;
+           animation: fadeInOut 3s ease-in-out;
+         `;
+         
+         notification.innerHTML = `
+           <div style="font-size: 24px; margin-bottom: 10px;">🎉 NEW DISCOVERY! 🎉</div>
+           <div style="margin-bottom: 10px;">${description}</div>
+           <div style="color: #ffd700;">+${bonus} Sand Bonus!</div>
+         `;
+         
+         document.body.appendChild(notification);
+         
+         // Remove after 3 seconds
+         setTimeout(() => {
+           if (notification.parentNode) {
+             notification.parentNode.removeChild(notification);
+           }
+         }, 3000);
+       }
 
       // Particle class
       class Particle {
@@ -851,58 +1117,75 @@
         updateUI(); // Update UI to show sand being spent
       }
 
-      // Upgrade system
-      function buyUpgrade(upgradeId) {
-        const upgrade = upgrades[upgradeId];
-        const cost = Math.floor(
-          upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.level),
-        );
+       // Upgrade system - Enhanced for idle mechanics
+       function buyUpgrade(upgradeId) {
+         const upgrade = upgrades[upgradeId];
+         const cost = Math.floor(
+           upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.level),
+         );
 
-        if (game.sandCollected >= cost) {
-          game.sandCollected -= cost;
-          upgrade.level++;
+         if (game.sandCollected >= cost) {
+           game.sandCollected -= cost;
+           upgrade.level++;
 
-          // Apply upgrade effects
-          if (upgradeId === "clickPower") {
-            game.clickPower = upgrade.effect(upgrade.level);
-          } else if (upgradeId === "collectionMultiplier") {
-            game.collectionMultiplier = upgrade.effect(upgrade.level);
-          } else if (upgradeId === "collectionSpeed") {
-            game.collectionSpeed = upgrade.effect(upgrade.level);
-          }
+           // Apply upgrade effects
+           if (upgradeId === "autoClicker") {
+             game.autoClickers = upgrade.effect(upgrade.level);
+             console.log(`Auto-clickers now: ${game.autoClickers}`);
+           } else if (upgradeId === "clickPower") {
+             game.clickPower = upgrade.effect(upgrade.level);
+           } else if (upgradeId === "collectionMultiplier") {
+             game.collectionMultiplier = upgrade.effect(upgrade.level);
+           } else if (upgradeId === "collectionSpeed") {
+             game.collectionSpeed = upgrade.effect(upgrade.level);
+           } else if (upgradeId === "reactionEfficiency") {
+             // Affects reaction rates in the physics update
+           } else if (upgradeId === "automationSpeed") {
+             // Affects dropper and auto-clicker speeds
+             const speedMultiplier = upgrade.effect(upgrade.level);
+             game.autoClickerSpeed = Math.max(30, Math.floor(180 * speedMultiplier));
+           }
 
-          renderUpgrades();
-          updateUI();
-        }
-      }
+           renderUpgrades();
+           updateUI();
+           console.log(`Purchased ${upgradeId} level ${upgrade.level} for ${cost} sand`);
+         }
+       }
 
-      function renderUpgrades() {
-        const container = document.getElementById("upgradesContainer");
-        container.innerHTML = "";
+       function renderUpgrades() {
+         const container = document.getElementById("upgradesContainer");
+         if (!container) {
+           console.error("Upgrades container not found!");
+           return;
+         }
+         
+         container.innerHTML = "";
 
-        Object.entries(upgrades).forEach(([id, upgrade]) => {
-          const cost = Math.floor(
-            upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.level),
-          );
-          const canAfford = game.sandCollected >= cost;
+         Object.entries(upgrades).forEach(([id, upgrade]) => {
+           const cost = Math.floor(
+             upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.level),
+           );
+           const canAfford = game.sandCollected >= cost;
 
-          const btn = document.createElement("button");
-          btn.className = "upgrade-btn";
-          btn.disabled = !canAfford;
-          btn.innerHTML = `
-                    <div class="upgrade-btn-content">
-                        <div class="upgrade-header">
-                            <span>${upgrade.icon} ${upgrade.name}</span>
-                            <span class="upgrade-level">Lv ${upgrade.level}</span>
-                        </div>
-                        <div class="upgrade-desc">${upgrade.description}</div>
-                        <div class="upgrade-cost">Cost: ${cost} sand</div>
-                    </div>
-                `;
-          btn.onclick = () => buyUpgrade(id);
-          container.appendChild(btn);
-        });
-      }
+           const btn = document.createElement("button");
+           btn.className = "upgrade-btn";
+           btn.disabled = !canAfford;
+           btn.innerHTML = `
+                     <div class="upgrade-btn-content">
+                         <div class="upgrade-header">
+                             <span>${upgrade.icon} ${upgrade.name}</span>
+                             <span class="upgrade-level">Lv ${upgrade.level}</span>
+                         </div>
+                         <div class="upgrade-desc">${upgrade.description}</div>
+                         <div class="upgrade-cost">Cost: ${cost} sand</div>
+                     </div>
+                 `;
+           btn.onclick = () => buyUpgrade(id);
+           container.appendChild(btn);
+         });
+         
+         console.log(`Rendered ${Object.keys(upgrades).length} upgrades`);
+       }
 
       // Dropper system
       function buyDropper(type) {
@@ -939,24 +1222,38 @@
         });
       }
 
-      // Material buttons
-      document.querySelectorAll(".material-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const material = btn.dataset.material;
-          const cost = parseInt(btn.dataset.cost) || 0;
+       // Update material button displays based on materials object
+       function updateMaterialButtons() {
+         document.querySelectorAll(".material-btn").forEach((btn) => {
+           const material = btn.dataset.material;
+           if (materials[material]) {
+             const mat = materials[material];
+             const costSpan = btn.querySelector('.material-cost');
+             if (costSpan) {
+               costSpan.textContent = mat.unlockCost > 0 ? `${mat.unlockCost} sand` : 'Free';
+             }
+           }
+         });
+       }
 
-          if (game.unlockedMaterials.has(material)) {
-            selectMaterial(material);
-          } else if (game.sandCollected >= cost) {
-            // Unlock material
-            game.sandCollected -= cost;
-            game.unlockedMaterials.add(material);
-            btn.classList.remove("locked");
-            selectMaterial(material);
-            updateUI();
-          }
-        });
-      });
+       // Material buttons
+       document.querySelectorAll(".material-btn").forEach((btn) => {
+         btn.addEventListener("click", () => {
+           const material = btn.dataset.material;
+           const cost = materials[material] ? materials[material].unlockCost : 0;
+
+           if (game.unlockedMaterials.has(material)) {
+             selectMaterial(material);
+           } else if (game.sandCollected >= cost) {
+             // Unlock material
+             game.sandCollected -= cost;
+             game.unlockedMaterials.add(material);
+             btn.classList.remove("locked");
+             selectMaterial(material);
+             updateUI();
+           }
+         });
+       });
 
       function selectMaterial(material) {
         game.currentMaterial = material;
@@ -1047,44 +1344,45 @@
             if (y === ROWS - 1 && Math.random() < game.collectionSpeed) {
               let collectionValue = game.collectionMultiplier;
 
-              // Calculate bonuses based on material type and interactions
-              if (particle.type === "sand") {
-                if (particle.touchedWater) {
-                  collectionValue *= 2; // Washed sand = 2x
-                }
-                if (particle.touchedOil) {
-                  collectionValue *= 1.5; // Lubricated sand = 1.5x
-                }
+               // Calculate bonuses based on material type and interactions
+               const material = materials[particle.type];
+               let baseValue = material.baseValue || 0;
+               
+               if (particle.type === "sand") {
+                 baseValue = 1; // Sand always has base value of 1
+                 if (particle.enhanced) {
+                   collectionValue *= particle.valueMultiplier || 2;
+                 }
+                 if (particle.touchedWater) {
+                   collectionValue *= 2; // Washed sand = 2x
+                 }
+                 if (particle.touchedOil) {
+                   collectionValue *= 1.5; // Lubricated sand = 1.5x
+                 }
 
-                // Check if there's a stone platform below (would be off-screen but we can check adjacent)
-                let onStonePlatform = false;
-                for (let checkX = x - 1; checkX <= x + 1; checkX++) {
-                  if (checkX >= 0 && checkX < COLS) {
-                    // Check if stone is nearby in bottom row
-                    if (
-                      game.grid[y][checkX] &&
-                      game.grid[y][checkX].type === "stone"
-                    ) {
-                      onStonePlatform = true;
-                      break;
-                    }
-                  }
-                }
+                 // Check if there's a stone platform nearby for multiplier
+                 let platformMultiplier = 1;
+                 for (let checkX = Math.max(0, x - 2); checkX <= Math.min(COLS - 1, x + 2); checkX++) {
+                   if (game.grid[y][checkX] && materials[game.grid[y][checkX].type].isPlatform) {
+                     const platMaterial = materials[game.grid[y][checkX].type];
+                     platformMultiplier = Math.max(platformMultiplier, platMaterial.multiplier || 1);
+                   }
+                 }
+                 collectionValue *= platformMultiplier;
 
-                if (onStonePlatform) {
-                  collectionValue *= 2; // Stone platform multiplier
-                }
-
-                game.sandCollected += collectionValue;
-                game.grid[y][x] = null;
-              } else if (particle.type === "glass") {
-                // Glass is worth 5x sand
-                game.sandCollected += collectionValue * 5;
-                game.grid[y][x] = null;
-              } else if (particle.type === "stone") {
-                // Stone stays at bottom as permanent platform
-                // Don't remove it
-              }
+                 game.sandCollected += collectionValue * baseValue;
+                 game.grid[y][x] = null;
+               } else if (baseValue > 0) {
+                 // Other valuable materials
+                 game.sandCollected += collectionValue * baseValue;
+                 game.grid[y][x] = null;
+               } else if (particle.type === "stone" || particle.type === "obsidian") {
+                 // Platforms stay at bottom as permanent platforms
+                 // Don't remove them
+               } else {
+                 // Remove other particles that reach bottom but have no value
+                 game.grid[y][x] = null;
+               }
             }
 
             // Ember passive generation (anywhere on screen)
@@ -1151,8 +1449,11 @@
         }
       }
 
-      // Check for material interactions
+      // Check for material interactions - Enhanced with new reaction system
       function checkMaterialInteractions(particle, x, y) {
+        const reactionSpeedMultiplier = upgrades.reactionEfficiency.level > 0 ? 
+          upgrades.reactionEfficiency.effect(upgrades.reactionEfficiency.level) : 1;
+
         for (let dy = -1; dy <= 1; dy++) {
           for (let dx = -1; dx <= 1; dx++) {
             if (dx === 0 && dy === 0) continue;
@@ -1164,71 +1465,20 @@
             const neighbor = game.grid[ny][nx];
             if (!neighbor) continue;
 
-            const neighborMat = materials[neighbor.type];
+            // Try the new reaction system first
+            if (triggerReaction(particle.type, neighbor.type, x, y)) {
+              // Remove the neighbor particle that was consumed in the reaction
+              game.grid[ny][nx] = null;
+              return; // Exit early since particle was transformed
+            }
 
-            // Sand + Water = Washed sand (2x value)
+            // Legacy interaction effects for materials that don't have full reactions
             if (particle.type === "sand" && neighbor.type === "water") {
               particle.touchedWater = true;
             }
 
-            // Sand + Oil = Lubricated (falls faster, bonus)
             if (particle.type === "sand" && neighbor.type === "oil") {
               particle.touchedOil = true;
-            }
-
-            // Sand + Fire = Glass (5x value)
-            if (
-              particle.type === "sand" &&
-              neighbor.type === "fire" &&
-              Math.random() < 0.1
-            ) {
-              game.grid[y][x] = new Particle(x, y, "glass");
-              game.sandCollected += 2; // Instant bonus for smelting
-            }
-
-            // Oil + Fire = EXPLOSION! (Big sand burst)
-            if (
-              particle.type === "oil" &&
-              neighbor.type === "fire" &&
-              Math.random() < 0.3
-            ) {
-              // Create explosion effect - remove oil and give massive bonus
-              game.grid[y][x] = null;
-              game.sandCollected += 10 * game.collectionMultiplier;
-
-              // Create fire particles around explosion
-              for (let ey = -2; ey <= 2; ey++) {
-                for (let ex = -2; ex <= 2; ex++) {
-                  const explosionX = x + ex;
-                  const explosionY = y + ey;
-                  if (
-                    explosionX >= 0 &&
-                    explosionX < COLS &&
-                    explosionY >= 0 &&
-                    explosionY < ROWS
-                  ) {
-                    if (
-                      !game.grid[explosionY][explosionX] &&
-                      Math.random() < 0.4
-                    ) {
-                      game.grid[explosionY][explosionX] = new Particle(
-                        explosionX,
-                        explosionY,
-                        "fire",
-                      );
-                    }
-                  }
-                }
-              }
-            }
-
-            // Wood + Fire = Ember (passive sand generator)
-            if (
-              particle.type === "wood" &&
-              neighbor.type === "fire" &&
-              Math.random() < 0.05
-            ) {
-              game.grid[y][x] = new Particle(x, y, "ember");
             }
           }
         }
@@ -1367,22 +1617,71 @@
         document.getElementById("sandPerSec").textContent = average.toFixed(1);
       }
 
-      // Update UI
-      function updateUI() {
-        document.getElementById("sandCount").textContent = Math.floor(
-          game.sandCollected,
-        );
+       // Update UI
+       function updateUI() {
+         document.getElementById("sandCount").textContent = Math.floor(
+           game.sandCollected,
+         );
 
-        let particleCount = 0;
+         const autoClickerElement = document.getElementById("autoClickerCount");
+         if (autoClickerElement) {
+           autoClickerElement.textContent = game.autoClickers;
+         }
+
+         let particleCount = 0;
+         for (let y = 0; y < ROWS; y++) {
+           for (let x = 0; x < COLS; x++) {
+             if (game.grid[y][x]) particleCount++;
+           }
+         }
+         document.getElementById("particleCount").textContent = particleCount;
+       }
+
+       // Auto-clicker functionality
+       function updateAutoClickers() {
+         if (game.autoClickers > 0) {
+           game.autoClickerTimer++;
+           if (game.autoClickerTimer >= game.autoClickerSpeed) {
+             game.autoClickerTimer = 0;
+             
+             // Auto-click at random locations
+             for (let i = 0; i < game.autoClickers; i++) {
+               const randomX = Math.floor(Math.random() * COLS);
+               const randomY = Math.floor(Math.random() * (ROWS - 10)) + 5; // Avoid top and bottom
+               
+               // Simulate placing sand at this location
+               if (!game.grid[randomY][randomX]) {
+                 game.grid[randomY][randomX] = new Particle(randomX, randomY, "sand");
+               }
+             }
+             
+             if (game.autoClickers > 0 && frameCount % 300 === 0) {
+               console.log(`Auto-clickers working: ${game.autoClickers} clickers, speed: ${game.autoClickerSpeed}`);
+             }
+           }
+         }
+       }
+
+      // Update ember passive generation
+      function updatePassiveGeneration() {
+        let passiveIncome = 0;
+        
+        // Count ember particles and generate passive sand
         for (let y = 0; y < ROWS; y++) {
           for (let x = 0; x < COLS; x++) {
-            if (game.grid[y][x]) particleCount++;
+            const particle = game.grid[y][x];
+            if (particle && particle.type === "ember") {
+              passiveIncome += materials.ember.passiveGeneration;
+            }
           }
         }
-        document.getElementById("particleCount").textContent = particleCount;
-      }
+        
+         if (passiveIncome > 0) {
+           game.sandCollected += passiveIncome * game.collectionMultiplier;
+         }
+       }
 
-      // Game loop
+      // Game loop - Enhanced for idle mechanics
       let frameCount = 0;
       function gameLoop() {
         frameCount++;
@@ -1393,6 +1692,14 @@
         // Update droppers
         updateDroppers();
 
+        // Update auto-clickers
+        updateAutoClickers();
+
+        // Update passive generation every second
+        if (frameCount % 60 === 0) {
+          updatePassiveGeneration();
+        }
+
         // Render
         render();
 
@@ -1401,7 +1708,7 @@
           updateUI();
         }
 
-        // Update sand per second
+        // Update sand per second and render upgrades/droppers
         if (frameCount % 60 === 0) {
           updateSandPerSec();
           renderUpgrades();
@@ -1411,11 +1718,12 @@
         requestAnimationFrame(gameLoop);
       }
 
-      // Start game
-      renderUpgrades();
-      renderDroppers();
-      updateUI();
-      gameLoop();
+       // Start game
+       updateMaterialButtons();
+       renderUpgrades();
+       renderDroppers();
+       updateUI();
+       gameLoop();
     </script>
   </body>
 </html>
