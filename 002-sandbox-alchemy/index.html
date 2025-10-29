@@ -1444,51 +1444,7 @@
              if (costSpan) {
                costSpan.textContent = mat.unlockCost > 0 ? `${mat.unlockCost} sand` : 'Free';
             }
-
-            // Quantum Material Special Behaviors
-            if (particle.type === "void") {
-              // Void absorbs nearby particles and grows larger
-              for (let dy = -2; dy <= 2; dy++) {
-                for (let dx = -2; dx <= 2; dx++) {
-                  const nx = x + dx;
-                  const ny = y + dy;
-                  if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS && (dx !== 0 || dy !== 0)) {
-                    const neighbor = game.grid[ny][nx];
-                    if (neighbor && neighbor.type !== "void" && Math.random() < 0.05) {
-                      game.grid[ny][nx] = null;
-                      collectSand(materials[neighbor.type].baseValue * 2 * getCatalystBonus());
-                      // Randomly spawn more void particles nearby
-                      if (Math.random() < 0.1) {
-                        const voidX = x + Math.floor(Math.random() * 3) - 1;
-                        const voidY = y + Math.floor(Math.random() * 3) - 1;
-                        if (voidX >= 0 && voidX < COLS && voidY >= 0 && voidY < ROWS && !game.grid[voidY][voidX]) {
-                          game.grid[voidY][voidX] = new Particle(voidX, voidY, "void");
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-
-            if (particle.type === "plasma") {
-              // Plasma converts other particles into sand rapidly
-              for (let dy = -1; dy <= 1; dy++) {
-                for (let dx = -1; dx <= 1; dx++) {
-                  const nx = x + dx;
-                  const ny = y + dy;
-                  if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS && (dx !== 0 || dy !== 0)) {
-                    const neighbor = game.grid[ny][nx];
-                    if (neighbor && neighbor.type !== "plasma" && Math.random() < 0.3) {
-                      const baseValue = materials[neighbor.type].baseValue || 1;
-                      collectSand(baseValue * 3 * getCatalystBonus());
-                      game.grid[ny][nx] = new Particle(nx, ny, "sand");
-                    }
-                  }
-                }
-              }
-            }
-          }
+           }
          });
        }
 
@@ -1696,6 +1652,50 @@
                     ) {
                       game.grid[y][x] = new Particle(x, y, "steam");
                       game.grid[ny][nx] = null;
+                    }
+                  }
+                }
+              }
+            }
+
+            // Quantum Material Special Behaviors
+            if (particle.type === "void") {
+              // Void absorbs nearby particles and grows larger
+              for (let dy = -2; dy <= 2; dy++) {
+                for (let dx = -2; dx <= 2; dx++) {
+                  const nx = x + dx;
+                  const ny = y + dy;
+                  if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS && (dx !== 0 || dy !== 0)) {
+                    const neighbor = game.grid[ny][nx];
+                    if (neighbor && neighbor.type !== "void" && Math.random() < 0.05) {
+                      game.grid[ny][nx] = null;
+                      collectSand(materials[neighbor.type].baseValue * 2 * getCatalystBonus());
+                      // Randomly spawn more void particles nearby
+                      if (Math.random() < 0.1) {
+                        const voidX = x + Math.floor(Math.random() * 3) - 1;
+                        const voidY = y + Math.floor(Math.random() * 3) - 1;
+                        if (voidX >= 0 && voidX < COLS && voidY >= 0 && voidY < ROWS && !game.grid[voidY][voidX]) {
+                          game.grid[voidY][voidX] = new Particle(voidX, voidY, "void");
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+
+            if (particle.type === "plasma") {
+              // Plasma converts other particles into sand rapidly
+              for (let dy = -1; dy <= 1; dy++) {
+                for (let dx = -1; dx <= 1; dx++) {
+                  const nx = x + dx;
+                  const ny = y + dy;
+                  if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS && (dx !== 0 || dy !== 0)) {
+                    const neighbor = game.grid[ny][nx];
+                    if (neighbor && neighbor.type !== "plasma" && Math.random() < 0.3) {
+                      const baseValue = materials[neighbor.type].baseValue || 1;
+                      collectSand(baseValue * 3 * getCatalystBonus());
+                      game.grid[ny][nx] = new Particle(nx, ny, "sand");
                     }
                   }
                 }
