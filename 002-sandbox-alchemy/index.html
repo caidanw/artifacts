@@ -69,7 +69,7 @@
         grid-template-rows: auto auto 1fr auto;
         gap: 15px;
         padding: 20px;
-        overflow: hidden;
+        overflow-y: scroll;
       }
 
       #quickStats {
@@ -85,7 +85,6 @@
       }
 
       #gameActions {
-        overflow-y: auto;
         padding-right: 10px;
       }
 
@@ -299,136 +298,150 @@
         margin-bottom: 5px;
       }
 
-       /* Responsive design */
-       @media (max-width: 1200px) {
-         #gameContainer {
-           grid-template-columns: 1fr 350px;
-           gap: 15px;
-           padding: 15px;
-         }
-
-         #controlsPanel {
-           padding: 15px;
-         }
-       }
-
-       @media (max-width: 900px) {
-         #gameContainer {
-           grid-template-columns: 1fr;
-           grid-template-rows: auto auto auto;
-           gap: 15px;
-         }
-
-         #controlsPanel {
-           grid-row: 3;
-           max-height: 400px;
-         }
-
-         #stats {
-           grid-template-columns: repeat(3, 1fr);
-         }
-       }
-
-       @media (max-width: 600px) {
-         body {
-           overflow-x: hidden;
-         }
-
-         #gameContainer {
-           padding: 10px;
-           gap: 10px;
-         }
-
-         #header h1 {
-           font-size: 24px;
-         }
-
-         #stats {
-           grid-template-columns: 1fr;
-           gap: 8px;
-         }
-
-         .material-btn,
-         .upgrade-btn,
-         .dropper-btn {
-           padding: 10px;
-           font-size: 13px;
-         }
-       }
-
-        /* Discovery notification animation */
-        @keyframes fadeInOut {
-          0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-          15% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
-          20% { transform: translate(-50%, -50%) scale(1); }
-          80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-          100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-        }
-
-        /* Prestige panel styling */
-        #prestigePanel {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      /* Responsive design */
+      @media (max-width: 1200px) {
+        #gameContainer {
+          grid-template-columns: 1fr 350px;
+          gap: 15px;
           padding: 15px;
-          border-radius: 8px;
-          margin-top: 20px;
-          border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
-        #prestigePanel h2 {
-          margin: 0 0 15px 0;
-          text-align: center;
-          font-size: 18px;
-        }
-
-        #prestigeStats {
-          margin-bottom: 15px;
-        }
-
-        #prestigeStats .stat {
-          margin-bottom: 8px;
-        }
-
-        #prestigeButton {
-          width: 100%;
+        #controlsPanel {
           padding: 15px;
-          border: 2px solid rgba(255, 255, 255, 0.3);
-          border-radius: 8px;
-          background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
-          color: white;
-          font-weight: bold;
-          cursor: pointer;
-          transition: all 0.3s;
-          text-align: center;
+        }
+      }
+
+      @media (max-width: 900px) {
+        #gameContainer {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto auto auto;
+          gap: 15px;
         }
 
-        #prestigeButton:hover:not(.disabled) {
-          background: linear-gradient(135deg, #d35400 0%, #e67e22 100%);
-          transform: translateY(-2px);
-          box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+        #controlsPanel {
+          grid-row: 3;
+          max-height: 400px;
         }
 
-        #prestigeButton.disabled {
-          background: rgba(255, 255, 255, 0.1);
-          border-color: rgba(255, 255, 255, 0.1);
-          cursor: not-allowed;
-          opacity: 0.5;
+        #stats {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      @media (max-width: 600px) {
+        body {
+          overflow-x: hidden;
         }
 
-        .upgrade-name {
-          font-size: 16px;
-          margin-bottom: 5px;
+        #gameContainer {
+          padding: 10px;
+          gap: 10px;
         }
 
-        .upgrade-desc {
-          font-size: 12px;
-          opacity: 0.9;
-          margin-bottom: 5px;
+        #header h1 {
+          font-size: 24px;
         }
 
-        .upgrade-cost {
-          font-size: 14px;
-          font-weight: bold;
+        #stats {
+          grid-template-columns: 1fr;
+          gap: 8px;
         }
+
+        .material-btn,
+        .upgrade-btn,
+        .dropper-btn {
+          padding: 10px;
+          font-size: 13px;
+        }
+      }
+
+      /* Discovery notification animation */
+      @keyframes fadeInOut {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.8);
+        }
+        15% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1.1);
+        }
+        20% {
+          transform: translate(-50%, -50%) scale(1);
+        }
+        80% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -50%) scale(0.8);
+        }
+      }
+
+      /* Prestige panel styling */
+      #prestigePanel {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      #prestigePanel h2 {
+        margin: 0 0 15px 0;
+        text-align: center;
+        font-size: 18px;
+      }
+
+      #prestigeStats {
+        margin-bottom: 15px;
+      }
+
+      #prestigeStats .stat {
+        margin-bottom: 8px;
+      }
+
+      #prestigeButton {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        background: linear-gradient(135deg, #e67e22 0%, #f39c12 100%);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+      }
+
+      #prestigeButton:hover:not(.disabled) {
+        background: linear-gradient(135deg, #d35400 0%, #e67e22 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+      }
+
+      #prestigeButton.disabled {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.1);
+        cursor: not-allowed;
+        opacity: 0.5;
+      }
+
+      .upgrade-name {
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
+
+      .upgrade-desc {
+        font-size: 12px;
+        opacity: 0.9;
+        margin-bottom: 5px;
+      }
+
+      .upgrade-cost {
+        font-size: 14px;
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
@@ -445,50 +458,58 @@
       </div>
 
       <div id="controlsPanel">
-         <div id="quickStats">
-           <h2>📊 Game Stats</h2>
-           <div id="stats">
-             <div class="stat">
-               <span class="stat-label">Sand Collected:</span>
-               <span class="stat-value" id="sandCount">0</span>
-             </div>
-             <div class="stat">
-               <span class="stat-label">Sand/sec:</span>
-               <span class="stat-value" id="sandPerSec">0.0</span>
-             </div>
-             <div class="stat">
-               <span class="stat-label">Auto-Clickers:</span>
-               <span class="stat-value" id="autoClickerCount">0</span>
-             </div>
-              <div class="stat">
-                <span class="stat-label">Particles:</span>
-                <span class="stat-value" id="particleCount">0</span>
-              </div>
+        <div id="quickStats">
+          <h2>📊 Game Stats</h2>
+          <div id="stats">
+            <div class="stat">
+              <span class="stat-label">Sand Collected:</span>
+              <span class="stat-value" id="sandCount">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Sand/sec:</span>
+              <span class="stat-value" id="sandPerSec">0.0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Auto-Clickers:</span>
+              <span class="stat-value" id="autoClickerCount">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Particles:</span>
+              <span class="stat-value" id="particleCount">0</span>
             </div>
           </div>
+        </div>
 
-          <div id="prestigePanel">
-            <h2>🌟 Dimensional Shift</h2>
-            <div id="prestigeStats">
-              <div class="stat">
-                <span class="stat-label">Catalysts:</span>
-                <span class="stat-value" id="catalystCount">0</span>
-              </div>
-              <div class="stat">
-                <span class="stat-label">Collection Bonus:</span>
-                <span class="stat-value" id="collectionBonus">+0%</span>
-              </div>
-              <div class="stat">
-                <span class="stat-label">Total Sand Lifetime:</span>
-                <span class="stat-value" id="totalSandLifetime">0</span>
-              </div>
+        <div id="prestigePanel">
+          <h2>🌟 Dimensional Shift</h2>
+          <div id="prestigeStats">
+            <div class="stat">
+              <span class="stat-label">Catalysts:</span>
+              <span class="stat-value" id="catalystCount">0</span>
             </div>
-            <div id="prestigeButton" class="upgrade-button disabled" onclick="attemptPrestige()">
-              <div class="upgrade-name">🌌 Dimensional Shift</div>
-              <div class="upgrade-desc">Reset reality for Catalysts (Requires 10,000 sand)</div>
-              <div class="upgrade-cost">+<span id="prestigeGain">0</span> Catalysts</div>
+            <div class="stat">
+              <span class="stat-label">Collection Bonus:</span>
+              <span class="stat-value" id="collectionBonus">+0%</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Total Sand Lifetime:</span>
+              <span class="stat-value" id="totalSandLifetime">0</span>
             </div>
           </div>
+          <div
+            id="prestigeButton"
+            class="upgrade-button disabled"
+            onclick="attemptPrestige()"
+          >
+            <div class="upgrade-name">🌌 Dimensional Shift</div>
+            <div class="upgrade-desc">
+              Reset reality for Catalysts (Requires 10,000 sand)
+            </div>
+            <div class="upgrade-cost">
+              +<span id="prestigeGain">0</span> Catalysts
+            </div>
+          </div>
+        </div>
 
         <div id="materialControls">
           <div id="currentMaterial">
@@ -533,17 +554,11 @@
               <span>🟡 Sand (Free to place)</span>
               <span class="material-cost">Free</span>
             </button>
-            <button
-              class="material-btn locked"
-              data-material="water"
-            >
+            <button class="material-btn locked" data-material="water">
               <span>💧 Water (2 sand/use)</span>
               <span class="material-cost">50 sand</span>
             </button>
-            <button
-              class="material-btn locked"
-              data-material="stone"
-            >
+            <button class="material-btn locked" data-material="stone">
               <span>⚫ Stone (5 sand/use)</span>
               <span class="material-cost">100 sand</span>
             </button>
@@ -551,31 +566,19 @@
 
           <div class="section">
             <h3>🔥 Advanced Materials</h3>
-            <button
-              class="material-btn locked"
-              data-material="fire"
-            >
+            <button class="material-btn locked" data-material="fire">
               <span>🔥 Fire (3 sand/use)</span>
               <span class="material-cost">200 sand</span>
             </button>
-            <button
-              class="material-btn locked"
-              data-material="wood"
-            >
+            <button class="material-btn locked" data-material="wood">
               <span>🟫 Wood (4 sand/use)</span>
               <span class="material-cost">150 sand</span>
             </button>
-            <button
-              class="material-btn locked"
-              data-material="oil"
-            >
+            <button class="material-btn locked" data-material="oil">
               <span>🟤 Oil (6 sand/use)</span>
               <span class="material-cost">300 sand</span>
             </button>
-            <button
-              class="material-btn locked"
-              data-material="steam"
-            >
+            <button class="material-btn locked" data-material="steam">
               <span>💨 Steam (2 sand/use)</span>
               <span class="material-cost">250 sand</span>
             </button>
@@ -650,16 +653,16 @@
           autoCollection: 0,
           materialEfficiency: 0,
           reactionSpeed: 0,
-          automation: 0
+          automation: 0,
         },
         reactions: new Map(), // Track active reactions
         materialCombos: new Map(), // Track discovered combinations
         prestige: {
           catalysts: 0,
           totalSandLifetime: 0, // Total sand collected across all runs
-          currentRunSand: 0,    // Sand collected this run only
-          hasPrestiged: false   // Track if player has ever prestiged
-        }
+          currentRunSand: 0, // Sand collected this run only
+          hasPrestiged: false, // Track if player has ever prestiged
+        },
       };
 
       // Upgrades definition - Rebalanced for idle game
@@ -961,7 +964,7 @@
           discoveryBonus: 50,
         },
         "sand+fire": {
-          result: "glass", 
+          result: "glass",
           chance: 0.2,
           description: "Sand + Fire = Glass (10x value!)",
           discoveryBonus: 100,
@@ -1008,73 +1011,90 @@
       // Combo discovery tracking
       const comboDiscoveries = new Map();
 
-       // Function to check and trigger reactions
-       function triggerReaction(material1, material2, x, y) {
-         const key1 = `${material1}+${material2}`;
-         const key2 = `${material2}+${material1}`;
-         
-         const reaction = materialReactions[key1] || materialReactions[key2];
-         if (!reaction) return false;
+      // Function to check and trigger reactions
+      function triggerReaction(material1, material2, x, y) {
+        const key1 = `${material1}+${material2}`;
+        const key2 = `${material2}+${material1}`;
 
-         // Apply reaction efficiency upgrade
-         const reactionChance = reaction.chance * (upgrades.reactionEfficiency.level > 0 ? 
-           upgrades.reactionEfficiency.effect(upgrades.reactionEfficiency.level) : 1);
+        const reaction = materialReactions[key1] || materialReactions[key2];
+        if (!reaction) return false;
 
-         if (Math.random() < Math.min(reactionChance, 0.8)) { // Cap at 80% chance
-           // Trigger reaction
-           if (reaction.result === "explosion") {
-             // Special explosion handling
-              collectSand(25 * game.collectionMultiplier * getCatalystBonus());
-             createExplosion(x, y);
-           } else if (reaction.result === "enhanced_sand") {
-             // Enhanced sand - create regular sand but mark it
-             const particle = new Particle(x, y, "sand");
-             particle.enhanced = true;
-             particle.valueMultiplier = 2;
-             game.grid[y][x] = particle;
-           } else if (materials[reaction.result]) {
-             // Create new material
-             game.grid[y][x] = new Particle(x, y, reaction.result);
-           }
+        // Apply reaction efficiency upgrade
+        const reactionChance =
+          reaction.chance *
+          (upgrades.reactionEfficiency.level > 0
+            ? upgrades.reactionEfficiency.effect(
+                upgrades.reactionEfficiency.level,
+              )
+            : 1);
 
-           // Discovery bonus (first time only)
-           const comboKey = key1 in materialReactions ? key1 : key2;
-           if (!comboDiscoveries.has(comboKey)) {
-             comboDiscoveries.set(comboKey, true);
-              collectSand(reaction.discoveryBonus * getCatalystBonus());
-             showDiscoveryNotification(reaction.description, reaction.discoveryBonus);
-           }
+        if (Math.random() < Math.min(reactionChance, 0.8)) {
+          // Cap at 80% chance
+          // Trigger reaction
+          if (reaction.result === "explosion") {
+            // Special explosion handling
+            collectSand(25 * game.collectionMultiplier * getCatalystBonus());
+            createExplosion(x, y);
+          } else if (reaction.result === "enhanced_sand") {
+            // Enhanced sand - create regular sand but mark it
+            const particle = new Particle(x, y, "sand");
+            particle.enhanced = true;
+            particle.valueMultiplier = 2;
+            game.grid[y][x] = particle;
+          } else if (materials[reaction.result]) {
+            // Create new material
+            game.grid[y][x] = new Particle(x, y, reaction.result);
+          }
 
-           return true;
-         }
-         return false;
-       }
+          // Discovery bonus (first time only)
+          const comboKey = key1 in materialReactions ? key1 : key2;
+          if (!comboDiscoveries.has(comboKey)) {
+            comboDiscoveries.set(comboKey, true);
+            collectSand(reaction.discoveryBonus * getCatalystBonus());
+            showDiscoveryNotification(
+              reaction.description,
+              reaction.discoveryBonus,
+            );
+          }
+
+          return true;
+        }
+        return false;
+      }
 
       function createExplosion(x, y) {
         // Create fire particles in explosion radius
         for (let dy = -3; dy <= 3; dy++) {
           for (let dx = -3; dx <= 3; dx++) {
-            const distance = Math.sqrt(dx*dx + dy*dy);
+            const distance = Math.sqrt(dx * dx + dy * dy);
             if (distance <= 3 && Math.random() < 0.5) {
               const explosionX = x + dx;
               const explosionY = y + dy;
-              if (explosionX >= 0 && explosionX < COLS && 
-                  explosionY >= 0 && explosionY < ROWS &&
-                  !game.grid[explosionY][explosionX]) {
-                game.grid[explosionY][explosionX] = new Particle(explosionX, explosionY, "fire");
+              if (
+                explosionX >= 0 &&
+                explosionX < COLS &&
+                explosionY >= 0 &&
+                explosionY < ROWS &&
+                !game.grid[explosionY][explosionX]
+              ) {
+                game.grid[explosionY][explosionX] = new Particle(
+                  explosionX,
+                  explosionY,
+                  "fire",
+                );
               }
             }
           }
         }
       }
 
-       function showDiscoveryNotification(description, bonus) {
-         // Create a visual notification for discoveries
-         console.log(`🎉 DISCOVERY: ${description} (+${bonus} sand bonus!)`);
-         
-         // Create a temporary notification overlay
-         const notification = document.createElement('div');
-         notification.style.cssText = `
+      function showDiscoveryNotification(description, bonus) {
+        // Create a visual notification for discoveries
+        console.log(`🎉 DISCOVERY: ${description} (+${bonus} sand bonus!)`);
+
+        // Create a temporary notification overlay
+        const notification = document.createElement("div");
+        notification.style.cssText = `
            position: fixed;
            top: 50%;
            left: 50%;
@@ -1090,105 +1110,115 @@
            text-align: center;
            animation: fadeInOut 3s ease-in-out;
          `;
-         
-         notification.innerHTML = `
+
+        notification.innerHTML = `
            <div style="font-size: 24px; margin-bottom: 10px;">🎉 NEW DISCOVERY! 🎉</div>
            <div style="margin-bottom: 10px;">${description}</div>
            <div style="color: #ffd700;">+${bonus} Sand Bonus!</div>
          `;
-         
-         document.body.appendChild(notification);
-         
-         // Remove after 3 seconds
-         setTimeout(() => {
-           if (notification.parentNode) {
-             notification.parentNode.removeChild(notification);
-           }
-          }, 3000);
-        }
 
-        // Helper function to collect sand and track prestige progress
-        function collectSand(amount) {
-          game.sandCollected += amount;
-          game.prestige.currentRunSand += amount;
-          game.prestige.totalSandLifetime += amount;
-        }
+        document.body.appendChild(notification);
 
-        // Calculate catalyst bonus
-        function getCatalystBonus() {
-          return 1 + (game.prestige.catalysts * 0.05);
-        }
-
-        // Calculate potential catalyst gain
-        function calculateCatalystGain() {
-          return Math.floor(game.prestige.totalSandLifetime / 1000);
-        }
-
-        // Prestige functions
-        function canPrestige() {
-          return game.sandCollected >= 10000;
-        }
-
-        function attemptPrestige() {
-          if (!canPrestige()) {
-            console.log("Need at least 10,000 sand to perform Dimensional Shift!");
-            return;
+        // Remove after 3 seconds
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
           }
+        }, 3000);
+      }
 
-          const catalystGain = calculateCatalystGain() - game.prestige.catalysts;
-          if (catalystGain <= 0) {
-            console.log("No additional catalysts would be gained from prestige!");
-            return;
-          }
+      // Helper function to collect sand and track prestige progress
+      function collectSand(amount) {
+        game.sandCollected += amount;
+        game.prestige.currentRunSand += amount;
+        game.prestige.totalSandLifetime += amount;
+      }
 
-          if (confirm(`Perform Dimensional Shift?\n\nThis will reset all progress but grant ${catalystGain} Catalysts for +${catalystGain * 5}% permanent collection bonus.\n\nCurrent bonus: +${game.prestige.catalysts * 5}%\nNew bonus: +${calculateCatalystGain() * 5}%`)) {
-            performPrestige();
-          }
+      // Calculate catalyst bonus
+      function getCatalystBonus() {
+        return 1 + game.prestige.catalysts * 0.05;
+      }
+
+      // Calculate potential catalyst gain
+      function calculateCatalystGain() {
+        return Math.floor(game.prestige.totalSandLifetime / 1000);
+      }
+
+      // Prestige functions
+      function canPrestige() {
+        return game.sandCollected >= 10000;
+      }
+
+      function attemptPrestige() {
+        if (!canPrestige()) {
+          console.log(
+            "Need at least 10,000 sand to perform Dimensional Shift!",
+          );
+          return;
         }
 
-        function performPrestige() {
-          // Calculate and award catalysts
-          const newCatalysts = calculateCatalystGain();
-          game.prestige.catalysts = newCatalysts;
-          game.prestige.hasPrestiged = true;
-
-          // Reset everything except prestige data
-          game.sandCollected = 50; // Give some starting sand after prestige
-          game.prestige.currentRunSand = 0;
-          game.currentMaterial = "sand";
-          game.brushSize = 1;
-          game.unlockedMaterials = new Set(["sand"]);
-          
-          // Reset grid
-          game.grid = Array(ROWS).fill().map(() => Array(COLS).fill(null));
-          
-          // Reset idle mechanics
-          game.autoClickers = 0;
-          game.autoClickerTimer = 0;
-          game.droppers = [];
-          
-          // Reset upgrades
-          Object.values(upgrades).forEach(upgrade => {
-            upgrade.level = 0;
-          });
-
-          // Reset research
-          game.research = {
-            autoCollection: 0,
-            materialEfficiency: 0,
-            reactionSpeed: 0,
-            automation: 0
-          };
-
-          // Unlock quantum materials if this isn't the first prestige
-          if (game.prestige.catalysts > 0) {
-            game.unlockedMaterials.add("void");
-            game.unlockedMaterials.add("plasma");
-            game.unlockedMaterials.add("crystal");
-          }
-
-          console.log(`🌌 Dimensional Shift complete! Gained ${newCatalysts} Catalysts (+${newCatalysts * 5}% collection bonus)`);
+        const catalystGain = calculateCatalystGain() - game.prestige.catalysts;
+        if (catalystGain <= 0) {
+          console.log("No additional catalysts would be gained from prestige!");
+          return;
         }
+
+        if (
+          confirm(
+            `Perform Dimensional Shift?\n\nThis will reset all progress but grant ${catalystGain} Catalysts for +${catalystGain * 5}% permanent collection bonus.\n\nCurrent bonus: +${game.prestige.catalysts * 5}%\nNew bonus: +${calculateCatalystGain() * 5}%`,
+          )
+        ) {
+          performPrestige();
+        }
+      }
+
+      function performPrestige() {
+        // Calculate and award catalysts
+        const newCatalysts = calculateCatalystGain();
+        game.prestige.catalysts = newCatalysts;
+        game.prestige.hasPrestiged = true;
+
+        // Reset everything except prestige data
+        game.sandCollected = 50; // Give some starting sand after prestige
+        game.prestige.currentRunSand = 0;
+        game.currentMaterial = "sand";
+        game.brushSize = 1;
+        game.unlockedMaterials = new Set(["sand"]);
+
+        // Reset grid
+        game.grid = Array(ROWS)
+          .fill()
+          .map(() => Array(COLS).fill(null));
+
+        // Reset idle mechanics
+        game.autoClickers = 0;
+        game.autoClickerTimer = 0;
+        game.droppers = [];
+
+        // Reset upgrades
+        Object.values(upgrades).forEach((upgrade) => {
+          upgrade.level = 0;
+        });
+
+        // Reset research
+        game.research = {
+          autoCollection: 0,
+          materialEfficiency: 0,
+          reactionSpeed: 0,
+          automation: 0,
+        };
+
+        // Unlock quantum materials if this isn't the first prestige
+        if (game.prestige.catalysts > 0) {
+          game.unlockedMaterials.add("void");
+          game.unlockedMaterials.add("plasma");
+          game.unlockedMaterials.add("crystal");
+        }
+
+        console.log(
+          `🌌 Dimensional Shift complete! Gained ${newCatalysts} Catalysts (+${newCatalysts * 5}% collection bonus)`,
+        );
+      }
 
       // Particle class
       class Particle {
@@ -1329,60 +1359,65 @@
         updateUI(); // Update UI to show sand being spent
       }
 
-       // Upgrade system - Enhanced for idle mechanics
-       function buyUpgrade(upgradeId) {
-         const upgrade = upgrades[upgradeId];
-         const cost = Math.floor(
-           upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.level),
-         );
+      // Upgrade system - Enhanced for idle mechanics
+      function buyUpgrade(upgradeId) {
+        const upgrade = upgrades[upgradeId];
+        const cost = Math.floor(
+          upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.level),
+        );
 
-         if (game.sandCollected >= cost) {
-           game.sandCollected -= cost;
-           upgrade.level++;
+        if (game.sandCollected >= cost) {
+          game.sandCollected -= cost;
+          upgrade.level++;
 
-           // Apply upgrade effects
-           if (upgradeId === "autoClicker") {
-             game.autoClickers = upgrade.effect(upgrade.level);
-             console.log(`Auto-clickers now: ${game.autoClickers}`);
-           } else if (upgradeId === "clickPower") {
-             game.clickPower = upgrade.effect(upgrade.level);
-           } else if (upgradeId === "collectionMultiplier") {
-             game.collectionMultiplier = upgrade.effect(upgrade.level);
-           } else if (upgradeId === "collectionSpeed") {
-             game.collectionSpeed = upgrade.effect(upgrade.level);
-           } else if (upgradeId === "reactionEfficiency") {
-             // Affects reaction rates in the physics update
-           } else if (upgradeId === "automationSpeed") {
-             // Affects dropper and auto-clicker speeds
-             const speedMultiplier = upgrade.effect(upgrade.level);
-             game.autoClickerSpeed = Math.max(30, Math.floor(180 * speedMultiplier));
-           }
+          // Apply upgrade effects
+          if (upgradeId === "autoClicker") {
+            game.autoClickers = upgrade.effect(upgrade.level);
+            console.log(`Auto-clickers now: ${game.autoClickers}`);
+          } else if (upgradeId === "clickPower") {
+            game.clickPower = upgrade.effect(upgrade.level);
+          } else if (upgradeId === "collectionMultiplier") {
+            game.collectionMultiplier = upgrade.effect(upgrade.level);
+          } else if (upgradeId === "collectionSpeed") {
+            game.collectionSpeed = upgrade.effect(upgrade.level);
+          } else if (upgradeId === "reactionEfficiency") {
+            // Affects reaction rates in the physics update
+          } else if (upgradeId === "automationSpeed") {
+            // Affects dropper and auto-clicker speeds
+            const speedMultiplier = upgrade.effect(upgrade.level);
+            game.autoClickerSpeed = Math.max(
+              30,
+              Math.floor(180 * speedMultiplier),
+            );
+          }
 
-           renderUpgrades();
-           updateUI();
-           console.log(`Purchased ${upgradeId} level ${upgrade.level} for ${cost} sand`);
-         }
-       }
+          renderUpgrades();
+          updateUI();
+          console.log(
+            `Purchased ${upgradeId} level ${upgrade.level} for ${cost} sand`,
+          );
+        }
+      }
 
-       function renderUpgrades() {
-         const container = document.getElementById("upgradesContainer");
-         if (!container) {
-           console.error("Upgrades container not found!");
-           return;
-         }
-         
-         container.innerHTML = "";
+      function renderUpgrades() {
+        const container = document.getElementById("upgradesContainer");
+        if (!container) {
+          console.error("Upgrades container not found!");
+          return;
+        }
 
-         Object.entries(upgrades).forEach(([id, upgrade]) => {
-           const cost = Math.floor(
-             upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.level),
-           );
-           const canAfford = game.sandCollected >= cost;
+        container.innerHTML = "";
 
-           const btn = document.createElement("button");
-           btn.className = "upgrade-btn";
-           btn.disabled = !canAfford;
-           btn.innerHTML = `
+        Object.entries(upgrades).forEach(([id, upgrade]) => {
+          const cost = Math.floor(
+            upgrade.baseCost * Math.pow(upgrade.costMultiplier, upgrade.level),
+          );
+          const canAfford = game.sandCollected >= cost;
+
+          const btn = document.createElement("button");
+          btn.className = "upgrade-btn";
+          btn.disabled = !canAfford;
+          btn.innerHTML = `
                      <div class="upgrade-btn-content">
                          <div class="upgrade-header">
                              <span>${upgrade.icon} ${upgrade.name}</span>
@@ -1392,12 +1427,12 @@
                          <div class="upgrade-cost">Cost: ${cost} sand</div>
                      </div>
                  `;
-           btn.onclick = () => buyUpgrade(id);
-           container.appendChild(btn);
-         });
-         
-         console.log(`Rendered ${Object.keys(upgrades).length} upgrades`);
-       }
+          btn.onclick = () => buyUpgrade(id);
+          container.appendChild(btn);
+        });
+
+        console.log(`Rendered ${Object.keys(upgrades).length} upgrades`);
+      }
 
       // Dropper system
       function buyDropper(type) {
@@ -1434,38 +1469,39 @@
         });
       }
 
-       // Update material button displays based on materials object
-       function updateMaterialButtons() {
-         document.querySelectorAll(".material-btn").forEach((btn) => {
-           const material = btn.dataset.material;
-           if (materials[material]) {
-             const mat = materials[material];
-             const costSpan = btn.querySelector('.material-cost');
-             if (costSpan) {
-               costSpan.textContent = mat.unlockCost > 0 ? `${mat.unlockCost} sand` : 'Free';
+      // Update material button displays based on materials object
+      function updateMaterialButtons() {
+        document.querySelectorAll(".material-btn").forEach((btn) => {
+          const material = btn.dataset.material;
+          if (materials[material]) {
+            const mat = materials[material];
+            const costSpan = btn.querySelector(".material-cost");
+            if (costSpan) {
+              costSpan.textContent =
+                mat.unlockCost > 0 ? `${mat.unlockCost} sand` : "Free";
             }
-           }
-         });
-       }
+          }
+        });
+      }
 
-       // Material buttons
-       document.querySelectorAll(".material-btn").forEach((btn) => {
-         btn.addEventListener("click", () => {
-           const material = btn.dataset.material;
-           const cost = materials[material] ? materials[material].unlockCost : 0;
+      // Material buttons
+      document.querySelectorAll(".material-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const material = btn.dataset.material;
+          const cost = materials[material] ? materials[material].unlockCost : 0;
 
-           if (game.unlockedMaterials.has(material)) {
-             selectMaterial(material);
-           } else if (game.sandCollected >= cost) {
-             // Unlock material
-             game.sandCollected -= cost;
-             game.unlockedMaterials.add(material);
-             btn.classList.remove("locked");
-             selectMaterial(material);
-             updateUI();
-           }
-         });
-       });
+          if (game.unlockedMaterials.has(material)) {
+            selectMaterial(material);
+          } else if (game.sandCollected >= cost) {
+            // Unlock material
+            game.sandCollected -= cost;
+            game.unlockedMaterials.add(material);
+            btn.classList.remove("locked");
+            selectMaterial(material);
+            updateUI();
+          }
+        });
+      });
 
       function selectMaterial(material) {
         game.currentMaterial = material;
@@ -1556,45 +1592,58 @@
             if (y === ROWS - 1 && Math.random() < game.collectionSpeed) {
               let collectionValue = game.collectionMultiplier;
 
-               // Calculate bonuses based on material type and interactions
-               const material = materials[particle.type];
-               let baseValue = material.baseValue || 0;
-               
-               if (particle.type === "sand") {
-                 baseValue = 1; // Sand always has base value of 1
-                 if (particle.enhanced) {
-                   collectionValue *= particle.valueMultiplier || 2;
-                 }
-                 if (particle.touchedWater) {
-                   collectionValue *= 2; // Washed sand = 2x
-                 }
-                 if (particle.touchedOil) {
-                   collectionValue *= 1.5; // Lubricated sand = 1.5x
-                 }
+              // Calculate bonuses based on material type and interactions
+              const material = materials[particle.type];
+              let baseValue = material.baseValue || 0;
 
-                 // Check if there's a stone platform nearby for multiplier
-                 let platformMultiplier = 1;
-                 for (let checkX = Math.max(0, x - 2); checkX <= Math.min(COLS - 1, x + 2); checkX++) {
-                   if (game.grid[y][checkX] && materials[game.grid[y][checkX].type].isPlatform) {
-                     const platMaterial = materials[game.grid[y][checkX].type];
-                     platformMultiplier = Math.max(platformMultiplier, platMaterial.multiplier || 1);
-                   }
-                 }
-                 collectionValue *= platformMultiplier;
+              if (particle.type === "sand") {
+                baseValue = 1; // Sand always has base value of 1
+                if (particle.enhanced) {
+                  collectionValue *= particle.valueMultiplier || 2;
+                }
+                if (particle.touchedWater) {
+                  collectionValue *= 2; // Washed sand = 2x
+                }
+                if (particle.touchedOil) {
+                  collectionValue *= 1.5; // Lubricated sand = 1.5x
+                }
 
-                  collectSand(collectionValue * baseValue * getCatalystBonus());
-                 game.grid[y][x] = null;
-               } else if (baseValue > 0) {
-                 // Other valuable materials
-                  collectSand(collectionValue * baseValue * getCatalystBonus());
-                 game.grid[y][x] = null;
-               } else if (particle.type === "stone" || particle.type === "obsidian") {
-                 // Platforms stay at bottom as permanent platforms
-                 // Don't remove them
-               } else {
-                 // Remove other particles that reach bottom but have no value
-                 game.grid[y][x] = null;
-               }
+                // Check if there's a stone platform nearby for multiplier
+                let platformMultiplier = 1;
+                for (
+                  let checkX = Math.max(0, x - 2);
+                  checkX <= Math.min(COLS - 1, x + 2);
+                  checkX++
+                ) {
+                  if (
+                    game.grid[y][checkX] &&
+                    materials[game.grid[y][checkX].type].isPlatform
+                  ) {
+                    const platMaterial = materials[game.grid[y][checkX].type];
+                    platformMultiplier = Math.max(
+                      platformMultiplier,
+                      platMaterial.multiplier || 1,
+                    );
+                  }
+                }
+                collectionValue *= platformMultiplier;
+
+                collectSand(collectionValue * baseValue * getCatalystBonus());
+                game.grid[y][x] = null;
+              } else if (baseValue > 0) {
+                // Other valuable materials
+                collectSand(collectionValue * baseValue * getCatalystBonus());
+                game.grid[y][x] = null;
+              } else if (
+                particle.type === "stone" ||
+                particle.type === "obsidian"
+              ) {
+                // Platforms stay at bottom as permanent platforms
+                // Don't remove them
+              } else {
+                // Remove other particles that reach bottom but have no value
+                game.grid[y][x] = null;
+              }
             }
 
             // Ember passive generation (anywhere on screen)
@@ -1665,17 +1714,41 @@
                 for (let dx = -2; dx <= 2; dx++) {
                   const nx = x + dx;
                   const ny = y + dy;
-                  if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS && (dx !== 0 || dy !== 0)) {
+                  if (
+                    nx >= 0 &&
+                    nx < COLS &&
+                    ny >= 0 &&
+                    ny < ROWS &&
+                    (dx !== 0 || dy !== 0)
+                  ) {
                     const neighbor = game.grid[ny][nx];
-                    if (neighbor && neighbor.type !== "void" && Math.random() < 0.05) {
+                    if (
+                      neighbor &&
+                      neighbor.type !== "void" &&
+                      Math.random() < 0.05
+                    ) {
                       game.grid[ny][nx] = null;
-                      collectSand(materials[neighbor.type].baseValue * 2 * getCatalystBonus());
+                      collectSand(
+                        materials[neighbor.type].baseValue *
+                          2 *
+                          getCatalystBonus(),
+                      );
                       // Randomly spawn more void particles nearby
                       if (Math.random() < 0.1) {
                         const voidX = x + Math.floor(Math.random() * 3) - 1;
                         const voidY = y + Math.floor(Math.random() * 3) - 1;
-                        if (voidX >= 0 && voidX < COLS && voidY >= 0 && voidY < ROWS && !game.grid[voidY][voidX]) {
-                          game.grid[voidY][voidX] = new Particle(voidX, voidY, "void");
+                        if (
+                          voidX >= 0 &&
+                          voidX < COLS &&
+                          voidY >= 0 &&
+                          voidY < ROWS &&
+                          !game.grid[voidY][voidX]
+                        ) {
+                          game.grid[voidY][voidX] = new Particle(
+                            voidX,
+                            voidY,
+                            "void",
+                          );
                         }
                       }
                     }
@@ -1690,9 +1763,19 @@
                 for (let dx = -1; dx <= 1; dx++) {
                   const nx = x + dx;
                   const ny = y + dy;
-                  if (nx >= 0 && nx < COLS && ny >= 0 && ny < ROWS && (dx !== 0 || dy !== 0)) {
+                  if (
+                    nx >= 0 &&
+                    nx < COLS &&
+                    ny >= 0 &&
+                    ny < ROWS &&
+                    (dx !== 0 || dy !== 0)
+                  ) {
                     const neighbor = game.grid[ny][nx];
-                    if (neighbor && neighbor.type !== "plasma" && Math.random() < 0.3) {
+                    if (
+                      neighbor &&
+                      neighbor.type !== "plasma" &&
+                      Math.random() < 0.3
+                    ) {
                       const baseValue = materials[neighbor.type].baseValue || 1;
                       collectSand(baseValue * 3 * getCatalystBonus());
                       game.grid[ny][nx] = new Particle(nx, ny, "sand");
@@ -1707,8 +1790,12 @@
 
       // Check for material interactions - Enhanced with new reaction system
       function checkMaterialInteractions(particle, x, y) {
-        const reactionSpeedMultiplier = upgrades.reactionEfficiency.level > 0 ? 
-          upgrades.reactionEfficiency.effect(upgrades.reactionEfficiency.level) : 1;
+        const reactionSpeedMultiplier =
+          upgrades.reactionEfficiency.level > 0
+            ? upgrades.reactionEfficiency.effect(
+                upgrades.reactionEfficiency.level,
+              )
+            : 1;
 
         for (let dy = -1; dy <= 1; dy++) {
           for (let dx = -1; dx <= 1; dx++) {
@@ -1873,86 +1960,97 @@
         document.getElementById("sandPerSec").textContent = average.toFixed(1);
       }
 
-       // Update UI
-       function updateUI() {
-         document.getElementById("sandCount").textContent = Math.floor(
-           game.sandCollected,
-         );
+      // Update UI
+      function updateUI() {
+        document.getElementById("sandCount").textContent = Math.floor(
+          game.sandCollected,
+        );
 
-         const autoClickerElement = document.getElementById("autoClickerCount");
-         if (autoClickerElement) {
-           autoClickerElement.textContent = game.autoClickers;
-         }
+        const autoClickerElement = document.getElementById("autoClickerCount");
+        if (autoClickerElement) {
+          autoClickerElement.textContent = game.autoClickers;
+        }
 
-         let particleCount = 0;
-         for (let y = 0; y < ROWS; y++) {
-           for (let x = 0; x < COLS; x++) {
-             if (game.grid[y][x]) particleCount++;
-           }
-         }
-          document.getElementById("particleCount").textContent = particleCount;
-
-          // Update prestige UI
-          const catalystElement = document.getElementById("catalystCount");
-          if (catalystElement) {
-            catalystElement.textContent = game.prestige.catalysts;
+        let particleCount = 0;
+        for (let y = 0; y < ROWS; y++) {
+          for (let x = 0; x < COLS; x++) {
+            if (game.grid[y][x]) particleCount++;
           }
+        }
+        document.getElementById("particleCount").textContent = particleCount;
 
-          const bonusElement = document.getElementById("collectionBonus");
-          if (bonusElement) {
-            bonusElement.textContent = `+${(game.prestige.catalysts * 5).toFixed(1)}%`;
+        // Update prestige UI
+        const catalystElement = document.getElementById("catalystCount");
+        if (catalystElement) {
+          catalystElement.textContent = game.prestige.catalysts;
+        }
+
+        const bonusElement = document.getElementById("collectionBonus");
+        if (bonusElement) {
+          bonusElement.textContent = `+${(game.prestige.catalysts * 5).toFixed(1)}%`;
+        }
+
+        const lifetimeElement = document.getElementById("totalSandLifetime");
+        if (lifetimeElement) {
+          lifetimeElement.textContent = Math.floor(
+            game.prestige.totalSandLifetime,
+          );
+        }
+
+        const prestigeButton = document.getElementById("prestigeButton");
+        const prestigeGain = document.getElementById("prestigeGain");
+        if (prestigeButton && prestigeGain) {
+          const canPerformPrestige = canPrestige();
+          const catalystGain = Math.max(
+            0,
+            calculateCatalystGain() - game.prestige.catalysts,
+          );
+
+          prestigeGain.textContent = catalystGain;
+
+          if (canPerformPrestige && catalystGain > 0) {
+            prestigeButton.classList.remove("disabled");
+          } else {
+            prestigeButton.classList.add("disabled");
           }
+        }
+      }
 
-          const lifetimeElement = document.getElementById("totalSandLifetime");
-          if (lifetimeElement) {
-            lifetimeElement.textContent = Math.floor(game.prestige.totalSandLifetime);
-          }
+      // Auto-clicker functionality
+      function updateAutoClickers() {
+        if (game.autoClickers > 0) {
+          game.autoClickerTimer++;
+          if (game.autoClickerTimer >= game.autoClickerSpeed) {
+            game.autoClickerTimer = 0;
 
-          const prestigeButton = document.getElementById("prestigeButton");
-          const prestigeGain = document.getElementById("prestigeGain");
-          if (prestigeButton && prestigeGain) {
-            const canPerformPrestige = canPrestige();
-            const catalystGain = Math.max(0, calculateCatalystGain() - game.prestige.catalysts);
-            
-            prestigeGain.textContent = catalystGain;
-            
-            if (canPerformPrestige && catalystGain > 0) {
-              prestigeButton.classList.remove("disabled");
-            } else {
-              prestigeButton.classList.add("disabled");
+            // Auto-click at random locations
+            for (let i = 0; i < game.autoClickers; i++) {
+              const randomX = Math.floor(Math.random() * COLS);
+              const randomY = Math.floor(Math.random() * (ROWS - 10)) + 5; // Avoid top and bottom
+
+              // Simulate placing sand at this location
+              if (!game.grid[randomY][randomX]) {
+                game.grid[randomY][randomX] = new Particle(
+                  randomX,
+                  randomY,
+                  "sand",
+                );
+              }
+            }
+
+            if (game.autoClickers > 0 && frameCount % 300 === 0) {
+              console.log(
+                `Auto-clickers working: ${game.autoClickers} clickers, speed: ${game.autoClickerSpeed}`,
+              );
             }
           }
-       }
+        }
+      }
 
-       // Auto-clicker functionality
-       function updateAutoClickers() {
-         if (game.autoClickers > 0) {
-           game.autoClickerTimer++;
-           if (game.autoClickerTimer >= game.autoClickerSpeed) {
-             game.autoClickerTimer = 0;
-             
-             // Auto-click at random locations
-             for (let i = 0; i < game.autoClickers; i++) {
-               const randomX = Math.floor(Math.random() * COLS);
-               const randomY = Math.floor(Math.random() * (ROWS - 10)) + 5; // Avoid top and bottom
-               
-               // Simulate placing sand at this location
-               if (!game.grid[randomY][randomX]) {
-                 game.grid[randomY][randomX] = new Particle(randomX, randomY, "sand");
-               }
-             }
-             
-             if (game.autoClickers > 0 && frameCount % 300 === 0) {
-               console.log(`Auto-clickers working: ${game.autoClickers} clickers, speed: ${game.autoClickerSpeed}`);
-             }
-                }
-              }
-             }
-
-       // Update ember passive generation
+      // Update ember passive generation
       function updatePassiveGeneration() {
         let passiveIncome = 0;
-        
+
         // Count ember particles and generate passive sand
         for (let y = 0; y < ROWS; y++) {
           for (let x = 0; x < COLS; x++) {
@@ -1962,11 +2060,13 @@
             }
           }
         }
-        
-         if (passiveIncome > 0) {
-            collectSand(passiveIncome * game.collectionMultiplier * getCatalystBonus());
-         }
-       }
+
+        if (passiveIncome > 0) {
+          collectSand(
+            passiveIncome * game.collectionMultiplier * getCatalystBonus(),
+          );
+        }
+      }
 
       // Game loop - Enhanced for idle mechanics
       let frameCount = 0;
@@ -2005,12 +2105,12 @@
         requestAnimationFrame(gameLoop);
       }
 
-       // Start game
-       updateMaterialButtons();
-       renderUpgrades();
-       renderDroppers();
-       updateUI();
-       gameLoop();
+      // Start game
+      updateMaterialButtons();
+      renderUpgrades();
+      renderDroppers();
+      updateUI();
+      gameLoop();
     </script>
   </body>
 </html>
