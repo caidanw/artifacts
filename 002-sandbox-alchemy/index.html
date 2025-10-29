@@ -1302,6 +1302,8 @@
         const particlesToPlace = game.clickPower;
         const material = materials[game.currentMaterial];
         const costPerParticle = material.placementCost;
+        
+        console.log(`Placing material: ${game.currentMaterial}, mouse: ${game.mouseX},${game.mouseY}, particles: ${particlesToPlace}`);
 
         for (let i = 0; i < particlesToPlace; i++) {
           for (let dy = -halfSize; dy <= halfSize; dy++) {
@@ -1320,6 +1322,7 @@
                 if (game.sandCollected >= costPerParticle) {
                   game.sandCollected -= costPerParticle;
                   game.grid[y][x] = new Particle(x, y, game.currentMaterial);
+                  console.log(`Placed particle at ${x},${y}: ${game.currentMaterial}`);
                 }
               }
             }
@@ -1443,8 +1446,12 @@
              const costSpan = btn.querySelector('.material-cost');
              if (costSpan) {
                costSpan.textContent = mat.unlockCost > 0 ? `${mat.unlockCost} sand` : 'Free';
-             }
-           }
+         }
+        
+        if (particleCount % 100 === 0 && particleCount > 0) {
+          console.log(`Rendering ${particleCount} particles`);
+        }
+      }
          });
        }
 
@@ -1742,10 +1749,12 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // Draw particles
+        let particleCount = 0;
         for (let y = 0; y < ROWS; y++) {
           for (let x = 0; x < COLS; x++) {
             const particle = game.grid[y][x];
             if (particle) {
+              particleCount++;
               const mat = materials[particle.type];
               ctx.fillStyle = mat.color;
 
