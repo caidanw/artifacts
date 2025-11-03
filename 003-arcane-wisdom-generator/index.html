@@ -143,12 +143,10 @@
         color: #e0d5ff;
         padding: 0.5rem;
         border-radius: 4px;
-        width: 80px;
         font-family: "Georgia", serif;
       }
 
       select {
-        width: 120px;
         cursor: pointer;
       }
 
@@ -243,11 +241,17 @@
         margin-bottom: 0;
       }
 
+      .invoke-button {
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
       .copy-button {
         background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
         padding: 0.75rem 1.5rem;
         font-size: 0.9rem;
         margin-top: 1rem;
+        margin-left: 1rem;
       }
 
       .stats {
@@ -378,9 +382,11 @@
             <option value="elemental">Elemental Lore</option>
           </select>
         </div>
+
+        <button onclick="generateWisdom()">Invoke Wisdom</button>
       </div>
 
-      <button onclick="generateWisdom()">✨ Invoke the Arcane ✨</button>
+      <div class="invoke-button"></div>
 
       <div class="wisdom-container">
         <div class="wisdom-text" id="wisdomText">
