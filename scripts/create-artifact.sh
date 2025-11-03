@@ -13,7 +13,7 @@ if [ -z "$name" ]; then
 	exit 1
 fi
 
-dirname="${next}-$(echo $name | tr ' ' '-')"
+dirname="${next}-$(echo "$name" | tr ' ' '-' | tr '[:upper:]' '[:lower:]')"
 mkdir -p "$dirname"
 
 # Get current date in YYYY-MM-DD format
