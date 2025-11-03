@@ -526,6 +526,38 @@
         ],
       };
 
+      // Track used items to ensure all are used before repeating
+      const usedItems = {
+        openings: [],
+        cosmic: [],
+        ancient: [],
+        dark: [],
+        elemental: [],
+        transitions: [],
+        endings: [],
+      };
+
+      function getUniqueItem(category) {
+        // If all items have been used, reset the used list
+        if (usedItems[category].length >= wisdomData[category].length) {
+          usedItems[category] = [];
+        }
+
+        // Find items that haven't been used yet
+        const availableItems = wisdomData[category].filter(
+          (item) => !usedItems[category].includes(item),
+        );
+
+        // Pick a random item from available ones
+        const selectedItem =
+          availableItems[Math.floor(Math.random() * availableItems.length)];
+
+        // Mark it as used
+        usedItems[category].push(selectedItem);
+
+        return selectedItem;
+      }
+
       function generateWisdom() {
         const paragraphCount = parseInt(
           document.getElementById("paragraphs").value,
@@ -543,7 +575,7 @@
 
             // First sentence of paragraph sometimes gets an opening
             if (j === 0 && Math.random() > 0.5) {
-              sentence = getRandomItem(wisdomData.openings) + " ";
+              sentence = getUniqueItem("openings") + " ";
             }
 
             // Add main content based on style
@@ -551,21 +583,21 @@
               const categories = ["cosmic", "ancient", "dark", "elemental"];
               const randomCategory =
                 categories[Math.floor(Math.random() * categories.length)];
-              sentence += getRandomItem(wisdomData[randomCategory]);
+              sentence += getUniqueItem(randomCategory);
             } else {
-              sentence += getRandomItem(wisdomData[style]);
+              sentence += getUniqueItem(style);
             }
 
             // Sometimes add a transition before the next sentence
             if (j < sentenceCount - 1 && Math.random() > 0.6) {
-              sentence += " " + getRandomItem(wisdomData.transitions) + " ";
+              sentence += " " + getUniqueItem("transitions") + " ";
             } else {
               sentence += " ";
             }
 
             // Last sentence sometimes gets an ending
             if (j === sentenceCount - 1 && Math.random() > 0.4) {
-              sentence += getRandomItem(wisdomData.endings);
+              sentence += getUniqueItem("endings");
             }
 
             // Capitalize first letter
@@ -589,10 +621,6 @@
         setTimeout(() => {
           wisdomContainer.style.animation = "fadeIn 0.5s ease-in";
         }, 10);
-      }
-
-      function getRandomItem(array) {
-        return array[Math.floor(Math.random() * array.length)];
       }
 
       function copyToClipboard() {
