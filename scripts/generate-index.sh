@@ -48,9 +48,9 @@ for dir in [0-9][0-9][0-9]-*/; do
 
   cat >>index.html <<ENTRY
     <a href="${dirname}/" class="artifact">
-      <span  class="number">${number}</span >
+      <span class="number">${number}</span >
       <div class="info">
-        <span  class="name">${name}</span >
+        <span class="name">${name}</span >
         <time class="date" datetime="${date}">${display_date}</time>
       </div>
     </a>
