@@ -405,10 +405,15 @@
             Click the button above to channel mystical wisdom from beyond the
             veil...
           </p>
+        <div style="text-align: center">
+          <button
+            class="copy-button"
+            style="display: none"
+            onclick="copyToClipboard()"
+          >
+            📋 Copy Wisdom
+          </button>
         </div>
-        <button class="copy-button" onclick="copyToClipboard()">
-          📋 Copy Wisdom
-        </button>
         <div class="stats" id="stats"></div>
       </div>
     </div>
@@ -637,6 +642,9 @@
           document.getElementById("stats").innerHTML =
             `✦ ${paragraphCount} passage${paragraphCount > 1 ? "s" : ""} ✦ ${totalWords} words of arcane wisdom ✦`;
 
+          // Show copy button
+          document.querySelector(".copy-button").style.display = "inline-block";
+
           // Fade back in
           wisdomContainer.style.animation = "fadeIn 0.5s ease-in";
         }, 300);
@@ -666,9 +674,6 @@
             );
           });
       }
-
-      // Generate initial wisdom on load
-      window.addEventListener("load", generateWisdom);
     </script>
   </body>
 </html>
