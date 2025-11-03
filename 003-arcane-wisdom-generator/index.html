@@ -8,14 +8,620 @@
     <link rel="stylesheet" href="../reset.css" />
     <link rel="stylesheet" href="../global.css" />
     <style>
-      /* Your experiment styles here */
+      body {
+        min-height: 100vh;
+        background: linear-gradient(
+          135deg,
+          #0a0e27 0%,
+          #1a0033 50%,
+          #0d001a 100%
+        );
+        color: #e0d5ff;
+        font-family: "Georgia", serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 2rem;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* Animated background particles */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        scale: 2;
+        background-image:
+          radial-gradient(
+            circle at 20% 80%,
+            rgba(120, 50, 255, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(255, 50, 150, 0.1) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 40% 40%,
+            rgba(50, 100, 255, 0.05) 0%,
+            transparent 50%
+          );
+        animation: drift 20s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      @keyframes drift {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0deg);
+        }
+        33% {
+          transform: translate(30px, -30px) rotate(120deg);
+        }
+        66% {
+          transform: translate(-20px, 20px) rotate(240deg);
+        }
+      }
+
+      .container {
+        max-width: 900px;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(
+          135deg,
+          #b794f6 0%,
+          #9f7aea 25%,
+          #805ad5 50%,
+          #6b46c1 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0 0 30px rgba(159, 122, 234, 0.5);
+        animation: glow 3s ease-in-out infinite;
+      }
+
+      @keyframes glow {
+        0%,
+        100% {
+          filter: brightness(1);
+        }
+        50% {
+          filter: brightness(1.2);
+        }
+      }
+
+      .subtitle {
+        text-align: center;
+        color: #9ca3af;
+        margin-bottom: 2rem;
+        font-style: italic;
+        letter-spacing: 2px;
+      }
+
+      .controls {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .control-group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        border: 1px solid rgba(159, 122, 234, 0.3);
+      }
+
+      label {
+        color: #b794f6;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+      }
+
+      input[type="number"],
+      select {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(159, 122, 234, 0.5);
+        color: #e0d5ff;
+        padding: 0.5rem;
+        border-radius: 4px;
+        width: 80px;
+        font-family: "Georgia", serif;
+      }
+
+      select {
+        width: 120px;
+        cursor: pointer;
+      }
+
+      button {
+        background: linear-gradient(135deg, #6b46c1 0%, #805ad5 100%);
+        color: #fff;
+        border: none;
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(107, 70, 193, 0.4);
+        position: relative;
+        overflow: hidden;
+      }
+
+      button::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        transform: translate(-50%, -50%);
+        transition:
+          width 0.6s ease,
+          height 0.6s ease;
+      }
+
+      button:hover::before {
+        width: 300px;
+        height: 300px;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(107, 70, 193, 0.6);
+      }
+
+      .wisdom-container {
+        background: linear-gradient(
+          135deg,
+          rgba(0, 0, 0, 0.3) 0%,
+          rgba(107, 70, 193, 0.1) 100%
+        );
+        border: 1px solid rgba(159, 122, 234, 0.3);
+        border-radius: 12px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+      }
+
+      .wisdom-container::before {
+        content: "✦";
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        color: rgba(159, 122, 234, 0.5);
+        font-size: 1.5rem;
+      }
+
+      .wisdom-container::after {
+        content: "✦";
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        color: rgba(159, 122, 234, 0.5);
+        font-size: 1.5rem;
+      }
+
+      .wisdom-text {
+        line-height: 1.8;
+        font-size: 1.1rem;
+        color: #e0d5ff;
+      }
+
+      .wisdom-text p {
+        margin-bottom: 1rem;
+        position: relative;
+        padding-left: 1rem;
+      }
+
+      .wisdom-text p:last-child {
+        margin-bottom: 0;
+      }
+
+      .copy-button {
+        background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+      }
+
+      .stats {
+        text-align: center;
+        color: #9ca3af;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        font-style: italic;
+      }
+
+      .theme-dark {
+        --theme-color: #b794f6;
+      }
+      .theme-cosmic {
+        --theme-color: #60a5fa;
+      }
+      .theme-mystic {
+        --theme-color: #f472b6;
+      }
+      .theme-shadow {
+        --theme-color: #64748b;
+      }
+
+      /* Glowing orbs */
+      .orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(40px);
+        opacity: 0.4;
+        animation: float 20s infinite ease-in-out;
+        pointer-events: none;
+      }
+
+      .orb1 {
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(
+          circle,
+          rgba(159, 122, 234, 0.8),
+          transparent
+        );
+        top: 10%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+
+      .orb2 {
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(
+          circle,
+          rgba(107, 70, 193, 0.8),
+          transparent
+        );
+        bottom: 20%;
+        right: 10%;
+        animation-delay: -5s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+        25% {
+          transform: translate(50px, -30px);
+        }
+        50% {
+          transform: translate(-30px, 50px);
+        }
+        75% {
+          transform: translate(30px, 30px);
+        }
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 2rem;
+        }
+        .wisdom-container {
+          padding: 1.5rem;
+        }
+        .controls {
+          flex-direction: column;
+        }
+        .control-group {
+          width: 100%;
+          justify-content: space-between;
+        }
+      }
     </style>
   </head>
   <body>
-    <!-- Your experiment markup here -->
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+
+    <div class="container">
+      <h1>⚡ Arcane Wisdom Generator ⚡</h1>
+      <p class="subtitle">
+        Channel the mystical knowledge of ancient sages and cosmic wanderers
+      </p>
+
+      <div class="controls">
+        <div class="control-group">
+          <label for="paragraphs">Passages:</label>
+          <input type="number" id="paragraphs" min="1" max="20" value="3" />
+        </div>
+
+        <div class="control-group">
+          <label for="style">Style:</label>
+          <select id="style">
+            <option value="mixed">Mixed Wisdom</option>
+            <option value="cosmic">Cosmic Truth</option>
+            <option value="ancient">Ancient Knowledge</option>
+            <option value="dark">Shadow Teachings</option>
+            <option value="elemental">Elemental Lore</option>
+          </select>
+        </div>
+      </div>
+
+      <button onclick="generateWisdom()">✨ Invoke the Arcane ✨</button>
+
+      <div class="wisdom-container">
+        <div class="wisdom-text" id="wisdomText">
+          <p>
+            Click the button above to channel mystical wisdom from beyond the
+            veil...
+          </p>
+        </div>
+        <button class="copy-button" onclick="copyToClipboard()">
+          📋 Copy Wisdom
+        </button>
+        <div class="stats" id="stats"></div>
+      </div>
+    </div>
 
     <script>
-      // Your experiment code here
+      // Mystical wisdom components
+      const wisdomData = {
+        openings: [
+          "In the depths of forgotten realms, where starlight bends to ancient will,",
+          "The old masters spoke in riddles of power, saying",
+          "Beyond the veil of mortal comprehension lies a truth most terrible:",
+          "When the moon casts no shadow and time itself grows thin,",
+          "In the space between heartbeats, where reality grows soft,",
+          "The archaic texts warn of knowledge too dangerous for common minds:",
+          "Where shadows dance without light to cast them,",
+          "At the crossroads of destiny and chaos,",
+          "In halls where echoes precede their sounds,",
+          "The crystalline prophecies speak thus:",
+          "When atoms remember their stellar birth,",
+          "In dreams darker than the void between stars,",
+          "The grimoire's pages whisper secrets:",
+          "Through fractures in the cosmic order,",
+          "Where thought becomes form and form dissolves,",
+        ],
+
+        cosmic: [
+          "consciousness is but an echo of the universe observing itself through infinite mirrors.",
+          "every star that dies births a thousand possibilities in dimensions yet unnamed.",
+          "the void between galaxies hums with the memories of civilizations that never were.",
+          "quantum entanglement is merely the universe's way of refusing to forget.",
+          "black holes are punctuation marks in the cosmic manuscript.",
+          "time spirals inward upon itself, creating loops that mock causality.",
+          "dark matter is the shadow cast by thoughts in higher dimensions.",
+          "entropy is the universe's slow exhale before the next cosmic breath.",
+          "nebulae are the dreams of dying stars made manifest.",
+          "gravity is desire given mathematical form.",
+          "parallel worlds bleed through in moments of perfect stillness.",
+          "the cosmic microwave background carries encrypted messages from before time.",
+          "spacetime folds like origami in the hands of those who understand its nature.",
+          "supernovas are merely the universe clearing its throat before speaking.",
+          "wormholes are scars left by thoughts traveling faster than possibility.",
+        ],
+
+        ancient: [
+          "the first word spoken still reverberates in places mortals fear to tread.",
+          "stone remembers the weight of centuries and shares its wisdom with those who listen.",
+          "the old gods left instructions written in the angles between reality.",
+          "blood and salt form circles that even time cannot cross.",
+          "names have power, but unnamed things have freedom.",
+          "the price of wisdom is always paid in moments you'll never get back.",
+          "ancient runes are merely shadows of the true language of creation.",
+          "every threshold crossed changes both the walker and the path.",
+          "the oldest magic is simply knowing when not to act.",
+          "symbols carved before language hold truths that words cannot contain.",
+          "the weight of knowledge bends the spine of reality.",
+          "forgotten rituals continue themselves in the dreams of stones.",
+          "power flows along ley lines older than continents.",
+          "the first fire still burns in places maps cannot show.",
+          "archives of impossible knowledge decay in towers that exist only on Tuesdays.",
+        ],
+
+        dark: [
+          "shadows have their own agenda, independent of the light that casts them.",
+          "the abyss doesn't gaze back; it was already looking when you arrived.",
+          "fear is the mind's attempt to process truths it cannot accept.",
+          "every light casts a shadow, but not every shadow requires a light.",
+          "the darkness between thoughts is where true consciousness dwells.",
+          "nightmares are rehearsals for realities we're not ready to face.",
+          "the void whispers sweetest to those who've already surrendered.",
+          "madness is merely perspective freed from the tyranny of consensus.",
+          "in absolute darkness, all possibilities exist simultaneously.",
+          "the shadow self knows truths the waking mind cannot bear.",
+          "silence screams loudest in places where sound has been forbidden.",
+          "the darkness doesn't hide monsters; it reveals what light conceals.",
+          "every ending is a doorway to something worse or better.",
+          "the space beneath things holds more truth than their surfaces.",
+          "forgotten things gather power in proportion to their abandonment.",
+        ],
+
+        elemental: [
+          "fire remembers every transformation it has witnessed since the first spark.",
+          "water finds the path of least resistance, but remembers every obstacle.",
+          "earth holds grudges in geological time.",
+          "air carries whispers from futures that haven't decided to exist yet.",
+          "lightning is the universe's way of connecting thoughts too large for minds.",
+          "ice preserves possibilities in crystalline suspension.",
+          "magma dreams of the shapes it will take when it finally cools.",
+          "storms are arguments between pressures that cannot coexist.",
+          "metal sings of its journey from stellar core to earthly form.",
+          "wood remembers every season in the grain of its being.",
+          "stone erodes into sand that remembers being mountains.",
+          "plasma dances between states, refusing all definitions.",
+          "crystals grow thoughts too slow for flesh to comprehend.",
+          "the periodic table is a map of reality's building blocks, but some elements hide between the numbers.",
+          "transmutation is possible; the universe just charges interest in entropy.",
+        ],
+
+        transitions: [
+          "Yet paradoxically,",
+          "The initiated understand that",
+          "Few comprehend the implications:",
+          "This reveals a deeper mystery:",
+          "The cost of such knowledge is clear:",
+          "But beware, for",
+          "In this liminal space,",
+          "The wise know",
+          "Ancient texts confirm:",
+          "The pattern continues:",
+          "Thus it was written,",
+          "The equation balances when",
+          "Reality bends to acknowledge that",
+          "The cosmic joke reveals itself:",
+          "At the threshold of understanding,",
+        ],
+
+        endings: [
+          "Such is the weight of truth upon minds unprepared for its burden.",
+          "The initiated nod knowingly while the uninformed sleep soundly.",
+          "This knowledge comes with a price measured in sleepless eternities.",
+          "Remember this when the stars align unfavorably.",
+          "The universe keeps such scores in ledgers written in quantum foam.",
+          "Thus spoke the void, and thus it shall speak again.",
+          "These words dissolve like salt in the ocean of time.",
+          "Understanding arrives precisely when it means to, never early nor late.",
+          "The wheel turns, grinding possibilities into actualities.",
+          "Silence follows such revelations like thunder follows lightning.",
+          "The cost has been paid; the knowledge is yours to bear.",
+          "Let those with eyes to see perceive the patterns within patterns.",
+          "The echo of this truth will ripple through probability itself.",
+          "And so the cosmic dance continues, indifferent to our comprehension.",
+          "Mark these words, for they will not pass this way again.",
+        ],
+      };
+
+      function generateWisdom() {
+        const paragraphCount = parseInt(
+          document.getElementById("paragraphs").value,
+        );
+        const style = document.getElementById("style").value;
+        let wisdomHTML = "";
+        let totalWords = 0;
+
+        for (let i = 0; i < paragraphCount; i++) {
+          let paragraph = "";
+          const sentenceCount = Math.floor(Math.random() * 3) + 3; // 3-5 sentences per paragraph
+
+          for (let j = 0; j < sentenceCount; j++) {
+            let sentence = "";
+
+            // First sentence of paragraph sometimes gets an opening
+            if (j === 0 && Math.random() > 0.5) {
+              sentence = getRandomItem(wisdomData.openings) + " ";
+            }
+
+            // Add main content based on style
+            if (style === "mixed") {
+              const categories = ["cosmic", "ancient", "dark", "elemental"];
+              const randomCategory =
+                categories[Math.floor(Math.random() * categories.length)];
+              sentence += getRandomItem(wisdomData[randomCategory]);
+            } else {
+              sentence += getRandomItem(wisdomData[style]);
+            }
+
+            // Sometimes add a transition before the next sentence
+            if (j < sentenceCount - 1 && Math.random() > 0.6) {
+              sentence += " " + getRandomItem(wisdomData.transitions) + " ";
+            } else {
+              sentence += " ";
+            }
+
+            // Last sentence sometimes gets an ending
+            if (j === sentenceCount - 1 && Math.random() > 0.4) {
+              sentence += getRandomItem(wisdomData.endings);
+            }
+
+            // Capitalize first letter
+            sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
+            paragraph += sentence;
+          }
+
+          // Count words
+          totalWords += paragraph.split(" ").length;
+          wisdomHTML += `<p>${paragraph}</p>`;
+        }
+
+        // Update display
+        document.getElementById("wisdomText").innerHTML = wisdomHTML;
+        document.getElementById("stats").innerHTML =
+          `✦ ${paragraphCount} passage${paragraphCount > 1 ? "s" : ""} ✦ ${totalWords} words of arcane wisdom ✦`;
+
+        // Add fade-in effect
+        const wisdomContainer = document.querySelector(".wisdom-container");
+        wisdomContainer.style.animation = "none";
+        setTimeout(() => {
+          wisdomContainer.style.animation = "fadeIn 0.5s ease-in";
+        }, 10);
+      }
+
+      function getRandomItem(array) {
+        return array[Math.floor(Math.random() * array.length)];
+      }
+
+      function copyToClipboard() {
+        const wisdomText = document.getElementById("wisdomText").innerText;
+        navigator.clipboard
+          .writeText(wisdomText)
+          .then(() => {
+            const button = document.querySelector(".copy-button");
+            const originalText = button.innerText;
+            button.innerText = "✓ Wisdom Copied!";
+            button.style.background =
+              "linear-gradient(135deg, #10b981 0%, #059669 100%)";
+
+            setTimeout(() => {
+              button.innerText = originalText;
+              button.style.background =
+                "linear-gradient(135deg, #4a5568 0%, #2d3748 100%)";
+            }, 2000);
+          })
+          .catch((err) => {
+            console.error("Failed to copy: ", err);
+            alert(
+              "Failed to copy to clipboard. Please select and copy manually.",
+            );
+          });
+      }
+
+      // Generate initial wisdom on load
+      window.addEventListener("load", generateWisdom);
     </script>
   </body>
 </html>
