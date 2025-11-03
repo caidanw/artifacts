@@ -338,6 +338,17 @@
         }
       }
 
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+      }
+
       /* Responsive design */
       @media (max-width: 768px) {
         h1 {
@@ -616,17 +627,19 @@
           wisdomHTML += `<p>${paragraph}</p>`;
         }
 
-        // Update display
-        document.getElementById("wisdomText").innerHTML = wisdomHTML;
-        document.getElementById("stats").innerHTML =
-          `✦ ${paragraphCount} passage${paragraphCount > 1 ? "s" : ""} ✦ ${totalWords} words of arcane wisdom ✦`;
-
-        // Add fade-in effect
+        // Add fade-in effect with fade-out first
         const wisdomContainer = document.querySelector(".wisdom-container");
-        wisdomContainer.style.animation = "none";
+        wisdomContainer.style.animation = "fadeOut 0.3s ease-out";
+
         setTimeout(() => {
+          // Update display
+          document.getElementById("wisdomText").innerHTML = wisdomHTML;
+          document.getElementById("stats").innerHTML =
+            `✦ ${paragraphCount} passage${paragraphCount > 1 ? "s" : ""} ✦ ${totalWords} words of arcane wisdom ✦`;
+
+          // Fade back in
           wisdomContainer.style.animation = "fadeIn 0.5s ease-in";
-        }, 10);
+        }, 300);
       }
 
       function copyToClipboard() {
